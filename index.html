@@ -2,444 +2,389 @@
 <html lang="zh-TW">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>With Me 🐾</title>
-<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="WithMe">
+<title>WithMe</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{
-  /* 🐰 Usahana palette */
-  --bg:#FBF7E9;
-  --surface:#FFFFFF;
-  --surface2:#F4E4B2;
-  --surface3:#F1CC74;
-  --border:rgba(159,143,130,0.18);
-  --border2:rgba(159,143,130,0.32);
-  --text:#4a3f35;
-  --muted:#9F8F82;
-  --hint:#c8bab0;
-  --accent:#F1CC74;
-  --accent2:#f0b830;
-  --red:#e57373;--green:#81c784;--gold:#F1CC74;
-  /* absence: student=warm amber, teacher=taupe brown */
-  --student-c:#e8a020;--student-bg:rgba(232,160,32,.13);--student-tc:#7a4e00;
-  --teacher-c:#9F8F82;--teacher-bg:rgba(159,143,130,.13);--teacher-tc:#4a3f35;
+  --bg:#FBF7E9;--sf:#FFF;--s2:#F4E4B2;--s3:#FDF3D0;
+  --bd:rgba(159,143,130,.16);--bd2:rgba(159,143,130,.30);
+  --tx:#3d3028;--mu:#9F8F82;--hi:#C8BAB0;
+  --ac:#F1CC74;--ac2:#d4a010;
+  --sc:#d4880a;--sb:rgba(212,136,10,.11);--st:#7a4e00;
+  --tc:#7a6e65;--tb:rgba(122,110,101,.11);--tt:#3d3028;
+  --rd:#e57373;--gn:#81c784;
   --r:14px;--r2:22px;
-  --shadow:0 2px 12px rgba(159,143,130,.13);
-  --shadow2:0 4px 20px rgba(159,143,130,.18);
+  --sh:0 2px 12px rgba(159,143,130,.12);
+  --sh2:0 5px 22px rgba(159,143,130,.18);
 }
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;
+body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;
   background-image:radial-gradient(circle at 15% 10%,rgba(241,204,116,.12),transparent 45%),
-                   radial-gradient(circle at 85% 85%,rgba(244,228,178,.15),transparent 45%)}
+                   radial-gradient(circle at 85% 85%,rgba(244,228,178,.14),transparent 45%)}
 .app{max-width:500px;margin:0 auto;min-height:100vh}
-
-/* HEADER */
-.header{padding:20px 18px 0;position:sticky;top:0;z-index:50;background:rgba(251,247,233,.95);backdrop-filter:blur(12px)}
-.header-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
-.logo{display:flex;align-items:center;gap:7px}
-.logo-svg{animation:float 3s ease-in-out infinite;flex-shrink:0}
-@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}
-.logo-text{font-size:18px;font-weight:800;letter-spacing:-.5px;color:var(--text)}
-.logo-text span{color:var(--accent2)}
-.date-chip{font-size:11px;color:var(--muted);background:var(--surface);padding:5px 11px;border-radius:999px;border:1px solid var(--border);font-weight:600}
-
-/* NAV */
-.nav{display:flex;gap:2px;padding:4px;background:var(--surface);border-radius:var(--r2);margin-bottom:13px;box-shadow:var(--shadow);overflow-x:auto}
-.nav-btn{flex:1;min-width:52px;padding:7px 0;border:none;background:transparent;color:var(--hint);font-size:11px;font-weight:700;cursor:pointer;border-radius:18px;transition:all .2s;font-family:'Nunito',sans-serif;display:flex;flex-direction:column;align-items:center;gap:1px}
-.nav-btn .nb-icon{font-size:15px;line-height:1}
-.nav-btn .nb-lbl{font-size:9px;white-space:nowrap}
-.nav-btn.active{background:var(--accent);color:var(--text);box-shadow:0 3px 10px rgba(241,204,116,.45)}
-
-/* QUICK BAR */
-.quick-bar{display:flex;gap:7px;margin-bottom:10px}
-.quick-input{flex:1;background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r);padding:0 13px;height:44px;color:var(--text);font-size:14px;font-family:'Nunito',sans-serif;font-weight:600;outline:none;transition:border-color .2s}
-.quick-input:focus{border-color:var(--accent)}
-.quick-input::placeholder{color:var(--hint);font-weight:500}
-.icon-btn{width:44px;height:44px;border-radius:var(--r);border:1.5px solid var(--border);background:var(--surface);color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:19px;transition:all .2s;flex-shrink:0}
-.icon-btn:hover{border-color:var(--border2);transform:scale(1.06)}
-.icon-btn.accent{background:var(--accent);border-color:var(--accent);color:var(--text);box-shadow:0 4px 14px rgba(241,204,116,.45)}
-
-/* PREVIEW */
-#preview{margin:0 0 10px;padding:11px 14px;background:var(--surface2);border-radius:var(--r);font-size:13px;display:none;flex-wrap:wrap;gap:10px;align-items:center;border:1.5px dashed var(--border2)}
-#preview.show{display:flex}
-.prev-lbl{color:var(--muted);font-size:11px;font-weight:600}
-.rule-badge{font-size:10px;color:#8d6e00;background:rgba(255,213,79,.2);border:1px solid rgba(255,213,79,.4);padding:2px 9px;border-radius:999px;font-weight:700}
-
-/* SECTION */
-.section{padding:0 18px 120px}
-.section-hd{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;margin-top:4px}
-.section-title{font-size:11px;font-weight:800;color:var(--hint);letter-spacing:.1em;text-transform:uppercase;display:flex;align-items:center;gap:5px}
-
-/* ALERTS */
-.alert-card{background:linear-gradient(135deg,rgba(255,140,105,.08),rgba(255,179,71,.08));border:1.5px solid rgba(255,140,105,.22);border-radius:var(--r);padding:12px 14px;margin-bottom:8px;display:flex;gap:11px;align-items:flex-start;animation:popIn .3s ease}
-@keyframes popIn{from{opacity:0;transform:scale(.97)}to{opacity:1;transform:scale(1)}}
-.alert-icon{font-size:20px;flex-shrink:0;margin-top:1px}
-.alert-title{font-size:13px;font-weight:700;margin-bottom:2px}
-.alert-sub{font-size:11px;color:var(--muted);font-weight:600}
-
-/* ABSENCE ALERT — special */
-.absence-alert{border-radius:var(--r);padding:12px 14px;margin-bottom:8px;display:flex;gap:11px;align-items:flex-start;animation:popIn .3s ease}
-.absence-alert.student{background:rgba(124,77,255,.07);border:1.5px solid rgba(124,77,255,.25)}
-.absence-alert.teacher{background:rgba(229,57,53,.07);border:1.5px solid rgba(229,57,53,.25)}
-
-/* CALENDAR */
-.cal-wrap{background:var(--surface);border-radius:var(--r2);padding:16px;margin-bottom:14px;box-shadow:var(--shadow2);border:1px solid var(--border)}
-.cal-nav{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
-.cal-nav-btn{background:var(--surface2);border:1px solid var(--border);color:var(--muted);font-size:16px;cursor:pointer;padding:5px 12px;border-radius:999px;transition:all .15s;font-family:'Nunito',sans-serif;font-weight:700}
-.cal-nav-btn:hover{color:var(--accent)}
-.cal-month-lbl{font-size:15px;font-weight:800;display:flex;align-items:center;gap:6px}
-.cal-dow{display:grid;grid-template-columns:repeat(7,1fr);margin-bottom:5px}
-.cal-dow-cell{text-align:center;font-size:10px;color:var(--hint);font-weight:800;padding:2px 0}
-.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
-.cal-day{aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;gap:2px;transition:all .15s;position:relative}
-.cal-day:hover{background:var(--surface2);transform:scale(1.08)}
-.cal-day.today{background:var(--accent);color:var(--text);font-weight:800;box-shadow:0 3px 10px rgba(241,204,116,.4)}
-.cal-day .dot-row{display:flex;gap:2px;justify-content:center;flex-wrap:wrap;max-width:28px}
-.cal-day .dot{width:4px;height:4px;border-radius:50%}
-/* absence markers on calendar */
-.cal-day .abs-mark{position:absolute;top:2px;right:3px;font-size:8px;line-height:1}
-
-/* WEEK */
-.week-nav{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
-.week-lbl{font-size:14px;font-weight:800}
-.week-grid{display:flex;flex-direction:column;gap:8px}
-.week-row{display:flex;gap:10px;align-items:flex-start}
-.week-day-label{width:36px;flex-shrink:0;text-align:center}
-.week-day-name{font-size:9px;color:var(--hint);font-weight:800;text-transform:uppercase}
-.week-day-num{font-size:18px;font-weight:800;line-height:1.1}
-.week-day-num.today{color:var(--accent2)}
-.week-events{flex:1;display:flex;flex-direction:column;gap:3px;min-height:34px;border-left:2px solid var(--border);padding-left:10px}
-.week-ev{padding:7px 11px;border-radius:10px;font-size:12px;font-weight:700;border-left:3px solid transparent;display:flex;justify-content:space-between;align-items:center;cursor:pointer;transition:all .15s}
-.week-ev:hover{transform:translateX(2px)}
-.week-empty{font-size:11px;color:var(--hint);padding:7px 10px;font-weight:600}
-
-/* EVENT CARDS */
-.ev-list{display:flex;flex-direction:column;gap:8px}
-.ev-card{background:var(--surface);border-radius:var(--r);padding:14px 16px;border-left:4px solid var(--hint);transition:all .2s;box-shadow:var(--shadow);border:1px solid var(--border);border-left-width:4px}
-.ev-card:hover{box-shadow:var(--shadow2);transform:translateY(-1px)}
-.ev-card.done{opacity:.4;filter:grayscale(.4)}
-/* ABSENCE CARD SPECIAL STYLES */
-.ev-card.abs-student{border-left-color:var(--student-c)!important;background:linear-gradient(135deg,rgba(124,77,255,.04),var(--surface))}
-.ev-card.abs-teacher{border-left-color:var(--teacher-c)!important;background:linear-gradient(135deg,rgba(229,57,53,.04),var(--surface))}
-.ev-head{display:flex;align-items:center;gap:8px;margin-bottom:5px;flex-wrap:wrap}
-.ev-cat-icon{font-size:18px;flex-shrink:0}
-.ev-title{font-size:14px;font-weight:700;flex:1}
-.ev-date-lbl{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);font-weight:500}
-.tag{font-size:10px;font-weight:800;padding:3px 9px;border-radius:999px}
-/* ABSENCE TAGS */
-.abs-tag-student{background:var(--student-bg);color:var(--student-tc);border:1px solid rgba(124,77,255,.2)}
-.abs-tag-teacher{background:var(--teacher-bg);color:var(--teacher-tc);border:1px solid rgba(229,57,53,.2)}
-
-/* ABSENCE NOTE BLOCKS */
-.abs-block{border-radius:10px;padding:10px 13px;margin-top:8px;font-size:12px;font-weight:600;line-height:1.7}
-.abs-block.student{background:var(--student-bg);border-left:3px solid var(--student-c)}
-.abs-block.teacher{background:var(--teacher-bg);border-left:3px solid var(--teacher-c)}
-.abs-block-title{font-size:10px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;margin-bottom:5px;display:flex;align-items:center;gap:5px}
-.abs-block.student .abs-block-title{color:var(--student-tc)}
-.abs-block.teacher .abs-block-title{color:var(--teacher-tc)}
-.abs-block-row{display:flex;gap:8px;align-items:baseline;margin-bottom:3px}
-.abs-block-lbl{font-size:10px;color:var(--muted);min-width:52px;flex-shrink:0}
-.abs-block-val{font-size:12px;font-weight:700;color:var(--text)}
-.makeup-badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:999px;font-size:10px;font-weight:800;margin-top:4px}
-.makeup-badge.pending{background:rgba(255,213,79,.2);color:#7a5e00;border:1px solid rgba(255,213,79,.35)}
-.makeup-badge.done{background:rgba(165,214,167,.2);color:#2a6040;border:1px solid rgba(165,214,167,.4)}
-
-.ev-note{font-size:12px;color:var(--muted);margin-top:5px;line-height:1.6;font-weight:600;padding:7px 10px;background:var(--surface2);border-radius:8px;white-space:pre-wrap}
-.rem-row{display:flex;flex-wrap:wrap;gap:4px;margin-top:7px}
-.rem-chip{font-size:10px;padding:3px 9px;border-radius:999px;background:var(--surface2);color:var(--muted);border:1px solid var(--border);font-weight:700;display:flex;align-items:center;gap:3px}
-.ev-actions{display:flex;gap:5px;margin-top:10px;padding-top:10px;border-top:1px solid var(--border);flex-wrap:wrap}
-.ev-act-btn{padding:5px 11px;border-radius:999px;border:1.5px solid var(--border);background:transparent;color:var(--muted);font-size:11px;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;transition:all .15s;display:flex;align-items:center;gap:3px}
-.ev-act-btn:hover{border-color:var(--border2);color:var(--text);background:var(--surface2)}
-.ev-act-btn.danger:hover{color:#c0392b;border-color:#f48fb1;background:#fff5f5}
-.ev-act-btn.ok:hover{color:#2e7d32;border-color:var(--green);background:#f5fff5}
-.ev-act-btn.makeup-done-btn{color:var(--student-tc);border-color:rgba(124,77,255,.3)}
-.ev-act-btn.makeup-done-btn:hover{background:var(--student-bg)}
-.month-sep{font-size:11px;font-weight:800;color:var(--hint);padding:14px 0 6px;display:flex;align-items:center;gap:8px}
-.month-sep::after{content:'';flex:1;height:1px;background:var(--border)}
-
-/* ABSENCE VIEW */
-.abs-stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
-.abs-stat{background:var(--surface);border-radius:var(--r);padding:13px 14px;box-shadow:var(--shadow);border:1px solid var(--border)}
-.abs-stat.student{border-left:4px solid var(--student-c)}
-.abs-stat.teacher{border-left:4px solid var(--teacher-c)}
-.abs-stat-num{font-size:26px;font-weight:800;margin-bottom:2px}
-.abs-stat-num.student{color:var(--student-c)}
-.abs-stat-num.teacher{color:var(--teacher-c)}
-.abs-stat-lbl{font-size:11px;color:var(--muted);font-weight:600}
-.abs-stat-sub{font-size:10px;color:var(--hint);font-weight:600;margin-top:2px}
-.abs-filter-bar{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
-.abs-filter{padding:6px 14px;border-radius:999px;border:1.5px solid var(--border);background:var(--surface2);color:var(--muted);font-size:11px;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;transition:all .15s}
-.abs-filter:hover{border-color:var(--border2)}
-.abs-filter.active-all{background:var(--accent);color:#fff;border-color:var(--accent)}
-.abs-filter.active-student{background:var(--student-c);color:#fff;border-color:var(--student-c)}
-.abs-filter.active-teacher{background:var(--teacher-c);color:#fff;border-color:var(--teacher-c)}
-.abs-filter.active-pending{background:#f5c842;color:#7a5e00;border-color:#f5c842}
-
-/* EMPTY STATES */
-.empty{text-align:center;padding:36px 20px;color:var(--hint)}
-.empty-art{font-size:48px;margin-bottom:10px;animation:float 3s ease-in-out infinite;display:block}
-.empty-msg{font-size:14px;font-weight:700;color:var(--muted);margin-bottom:4px}
-.empty-sub{font-size:12px;font-weight:600;color:var(--hint)}
-
-/* RULES VIEW */
-.rules-intro{font-size:13px;color:var(--muted);margin-bottom:16px;line-height:1.7;padding:13px 15px;background:var(--surface);border-radius:var(--r);border-left:4px solid var(--gold);font-weight:600;box-shadow:var(--shadow)}
-.rule-form{background:var(--surface);border-radius:var(--r2);padding:18px;margin-bottom:16px;box-shadow:var(--shadow2);border:1px solid var(--border)}
-.rf{margin-bottom:12px}
-.rf label{display:block;font-size:10px;color:var(--muted);font-weight:800;letter-spacing:.08em;margin-bottom:6px;text-transform:uppercase}
-.rf input,.rf textarea{width:100%;background:var(--surface2);border:1.5px solid var(--border);border-radius:var(--r);padding:10px 13px;color:var(--text);font-size:13px;font-family:'Nunito',sans-serif;font-weight:600;outline:none;transition:border-color .2s}
-.rf input:focus,.rf textarea:focus{border-color:var(--accent)}
-.rf textarea{resize:none;height:60px;line-height:1.5}
-.toggle-group{display:flex;gap:6px;flex-wrap:wrap}
-.toggle-btn{padding:6px 13px;border-radius:999px;border:1.5px solid var(--border);background:var(--surface2);color:var(--muted);font-size:11px;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;transition:all .15s}
-.toggle-btn.on{background:var(--accent);border-color:var(--accent2);color:var(--text);box-shadow:0 2px 8px rgba(241,204,116,.4)}
-.add-rule-btn{width:100%;height:42px;background:var(--accent);color:var(--text);border:none;border-radius:var(--r);font-size:13px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;margin-top:4px;box-shadow:0 4px 14px rgba(241,204,116,.4);transition:opacity .15s}
-.add-rule-btn:hover{opacity:.88}
-.rule-card{background:var(--surface);border-radius:var(--r);padding:13px 15px;margin-bottom:8px;border-left:4px solid var(--accent);display:flex;gap:12px;align-items:flex-start;box-shadow:var(--shadow);border:1px solid var(--border);border-left-width:4px}
-.rule-card.builtin{border-left-color:var(--hint)}
-.rule-body{flex:1}
-.rule-kw{font-size:14px;font-weight:800;margin-bottom:4px;display:flex;align-items:center;gap:6px}
-.rule-meta{font-size:11px;color:var(--muted);font-weight:600;line-height:1.8}
-.rule-note-preview{font-size:11px;color:var(--muted);font-style:italic;margin-top:3px;font-weight:600}
-.rule-del{background:none;border:none;color:var(--hint);font-size:20px;cursor:pointer;line-height:1;padding:0;flex-shrink:0;transition:color .15s}
-.rule-del:hover{color:var(--red)}
-.builtin-tag{font-size:9px;padding:2px 7px;border-radius:5px;background:var(--surface2);color:var(--hint);font-weight:700;border:1px solid var(--border)}
-
-/* MODAL */
-.modal-bg{position:fixed;inset:0;background:rgba(80,40,20,.5);z-index:100;display:flex;align-items:flex-end;justify-content:center;backdrop-filter:blur(6px)}
-.modal{background:var(--bg);border-radius:28px 28px 0 0;padding:24px 20px 44px;width:100%;max-width:500px;animation:slideUp .24s cubic-bezier(.34,1.56,.64,1);max-height:92vh;overflow-y:auto}
-@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
-.modal-title{font-size:17px;font-weight:800;margin-bottom:18px;display:flex;justify-content:space-between;align-items:center}
-.modal-close{background:var(--surface2);border:none;color:var(--muted);font-size:18px;cursor:pointer;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center}
-.field{margin-bottom:13px}
-.field label{display:block;font-size:10px;color:var(--muted);font-weight:800;letter-spacing:.08em;margin-bottom:6px;text-transform:uppercase}
-.field input,.field textarea,.field select{width:100%;background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r);padding:10px 13px;color:var(--text);font-size:14px;font-family:'Nunito',sans-serif;font-weight:600;outline:none;transition:border-color .2s}
-.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--accent)}
-.field textarea{resize:none;height:72px;line-height:1.5}
-.field select option{background:var(--surface)}
-.field-row{display:flex;gap:10px;min-width:0}.field-row .field{flex:1;min-width:0}
-.field-row .field input{min-width:0;width:100%}
-.cat-pills{display:flex;gap:6px;flex-wrap:wrap}
-.cat-pill{padding:7px 14px;border-radius:999px;border:1.5px solid var(--border);background:var(--surface2);color:var(--muted);font-size:12px;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;transition:all .15s;display:flex;align-items:center;gap:5px}
-.rem-pills{display:flex;gap:6px;flex-wrap:wrap}
-.rem-pill-btn{padding:6px 13px;border-radius:999px;border:1.5px solid var(--border);background:var(--surface2);color:var(--muted);font-size:11px;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;transition:all .15s}
-.rem-pill-btn.active{background:var(--accent);border-color:var(--accent2);color:var(--text)}
-/* absence form section inside modal */
-.abs-form-section{background:var(--surface2);border-radius:var(--r);padding:14px;margin-bottom:13px;border:1.5px dashed var(--border2)}
-.abs-form-section.student-section{border-color:rgba(232,160,32,.35);background:rgba(232,160,32,.06)}
-.abs-form-section.teacher-section{border-color:rgba(159,143,130,.35);background:rgba(159,143,130,.06)}
-.abs-section-title{font-size:12px;font-weight:800;margin-bottom:12px;display:flex;align-items:center;gap:6px}
-.abs-section-title.student{color:var(--student-tc)}
-.abs-section-title.teacher{color:var(--teacher-tc)}
-.save-btn{width:100%;height:48px;background:var(--accent);color:var(--text);border:none;border-radius:var(--r);font-size:15px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;transition:opacity .15s;box-shadow:0 4px 16px rgba(241,204,116,.4);margin-top:4px;display:flex;align-items:center;justify-content:center;gap:8px}
-.save-btn.purple-btn{background:var(--student-bg);color:var(--student-tc);border:2px solid var(--student-c);box-shadow:none}
-.save-btn.red-btn{background:var(--teacher-bg);color:var(--teacher-tc);border:2px solid var(--teacher-c);box-shadow:none}
-.save-btn:hover{opacity:.88}
-
-/* UPLOAD */
-.upload-zone{border:2px dashed var(--border2);border-radius:var(--r);padding:28px;text-align:center;cursor:pointer;transition:all .2s;position:relative;margin-bottom:12px;background:var(--surface2)}
-.upload-zone:hover{border-color:var(--accent)}
-.upload-zone input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
-.upload-hint{font-size:13px;color:var(--muted);line-height:1.7;font-weight:600}
-.api-row{display:flex;gap:8px;margin-bottom:12px;align-items:center}
-.api-inp{flex:1;background:var(--surface);border:1.5px solid var(--border);border-radius:var(--r);padding:9px 12px;color:var(--text);font-size:12px;font-family:'DM Mono',monospace;outline:none}
-.api-inp:focus{border-color:var(--accent)}
-.api-saved{font-size:12px;color:#2e7d32;font-weight:700;flex-shrink:0}
-.spinner{width:28px;height:28px;border:3px solid var(--border2);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 12px}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+@keyframes pop{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
+@keyframes up{from{transform:translateY(100%)}to{transform:translateY(0)}}
 @keyframes spin{to{transform:rotate(360deg)}}
-.ai-ev-item{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--border)}
-.ai-ev-item:last-child{border:none}
-.ai-ev-check{width:18px;height:18px;cursor:pointer;accent-color:var(--accent);flex-shrink:0;margin-top:2px}
-.smart-banner{background:rgba(255,213,79,.1);border:1.5px solid rgba(255,213,79,.3);border-radius:var(--r);padding:10px 14px;font-size:12px;color:#7a5e00;margin-bottom:12px;line-height:1.6;font-weight:700;display:flex;align-items:center;gap:8px}
 
-.fab-area{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);width:calc(100% - 32px);max-width:468px;z-index:40;display:flex;gap:8px}
-.fab-main{flex:1;height:52px;background:var(--accent);border:none;border-radius:var(--r2);color:var(--text);font-size:14px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;box-shadow:0 6px 22px rgba(241,204,116,.5);transition:all .2s;display:flex;align-items:center;justify-content:center;gap:6px}
-.fab-main:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(241,204,116,.6)}
-.fab-abs{width:52px;height:52px;border:2px solid var(--border2);border-radius:var(--r2);font-size:22px;cursor:pointer;background:var(--surface);box-shadow:var(--shadow2);transition:all .2s;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.fab-abs:hover{transform:translateY(-2px);background:var(--surface2)}
-.fab-abs.student{border-color:var(--student-c)}
-.fab-abs.teacher{border-color:var(--teacher-c)}
-
-/* TOAST */
-.toast{position:fixed;bottom:84px;left:50%;transform:translateX(-50%);background:var(--surface);border:1.5px solid rgba(255,213,79,.4);color:#7a5e00;padding:10px 18px;border-radius:999px;font-size:12px;font-weight:700;z-index:200;max-width:340px;text-align:center;box-shadow:var(--shadow2);white-space:nowrap}
+.hdr{padding:18px 18px 0;position:sticky;top:0;z-index:50;background:rgba(251,247,233,.95);backdrop-filter:blur(14px)}
+.hdr-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:13px}
+.logo{display:flex;align-items:center;gap:8px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.logo-ic{font-size:26px;animation:float 3s ease-in-out infinite;line-height:1}
+.logo-tx{font-size:18px;font-weight:800;color:var(--tx);letter-spacing:-.4px}
+.logo-tx em{color:var(--ac2);font-style:normal}
+.date-chip{font-size:11px;color:var(--mu);background:var(--sf);padding:5px 12px;border-radius:999px;border:1px solid var(--bd);font-weight:700}
+.nav{display:flex;gap:2px;padding:4px;background:var(--sf);border-radius:var(--r2);margin-bottom:13px;box-shadow:var(--sh);overflow-x:auto;scrollbar-width:none}
+.nav::-webkit-scrollbar{display:none}
+.nb{flex:1;min-width:50px;padding:7px 0;border:none;background:transparent;color:var(--hi);font-size:10px;font-weight:700;cursor:pointer;border-radius:18px;transition:all .2s;font-family:'Nunito',sans-serif;display:flex;flex-direction:column;align-items:center;gap:2px;line-height:1}
+.nb .ni{font-size:18px}
+.nb.active{background:var(--ac);color:var(--tx);box-shadow:0 3px 10px rgba(241,204,116,.5)}
+.qbar{display:flex;gap:7px;margin-bottom:10px}
+.qi{flex:1;background:var(--sf);border:1.5px solid var(--bd);border-radius:var(--r);padding:0 13px;height:44px;color:var(--tx);font-size:14px;font-family:'Nunito',sans-serif;font-weight:600;outline:none;transition:border-color .2s}
+.qi:focus{border-color:var(--ac)}
+.qi::placeholder{color:var(--hi);font-weight:500}
+.ibtn{width:44px;height:44px;border-radius:var(--r);border:1.5px solid var(--bd);background:var(--sf);color:var(--mu);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:20px;transition:all .2s;flex-shrink:0}
+.ibtn:hover{border-color:var(--bd2);transform:scale(1.06)}
+.ibtn.ac{background:var(--ac);border-color:var(--ac2);color:var(--tx);box-shadow:0 4px 14px rgba(241,204,116,.45)}
+#pv{margin:0 0 10px;padding:10px 14px;background:var(--s2);border-radius:var(--r);font-size:13px;display:none;flex-wrap:wrap;gap:9px;align-items:center;border:1.5px dashed var(--bd2)}
+#pv.on{display:flex}
+.rb{font-size:10px;color:#7a5e00;background:rgba(241,204,116,.25);border:1px solid rgba(241,204,116,.5);padding:2px 9px;border-radius:999px;font-weight:700}
+.sec{padding:0 18px 120px}
+.shd{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;margin-top:4px}
+.stl{font-size:11px;font-weight:800;color:var(--hi);letter-spacing:.09em;text-transform:uppercase}
+.alc{background:linear-gradient(135deg,rgba(241,204,116,.1),rgba(241,204,116,.05));border:1.5px solid rgba(241,204,116,.35);border-radius:var(--r);padding:12px 14px;margin-bottom:8px;display:flex;gap:11px;align-items:flex-start;animation:pop .3s ease}
+.ali{font-size:20px;flex-shrink:0;margin-top:1px}
+.alt{font-size:13px;font-weight:700;margin-bottom:2px}
+.als{font-size:11px;color:var(--mu);font-weight:600}
+.abal{border-radius:var(--r);padding:12px 14px;margin-bottom:8px;display:flex;gap:11px;align-items:flex-start;animation:pop .3s ease}
+.abal.student{background:var(--sb);border:1.5px solid rgba(212,136,10,.3)}
+.abal.teacher{background:var(--tb);border:1.5px solid rgba(122,110,101,.3)}
+.cal{background:var(--sf);border-radius:var(--r2);padding:16px;margin-bottom:14px;box-shadow:var(--sh2);border:1px solid var(--bd)}
+.cnav{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+.cnb{background:var(--s2);border:1px solid var(--bd);color:var(--mu);font-size:16px;cursor:pointer;padding:5px 12px;border-radius:999px;font-family:'Nunito',sans-serif;font-weight:700;transition:all .15s}
+.cnb:hover{color:var(--ac2)}
+.cml{font-size:15px;font-weight:800}
+.cdow{display:grid;grid-template-columns:repeat(7,1fr);margin-bottom:4px}
+.cdw{text-align:center;font-size:10px;color:var(--hi);font-weight:800;padding:2px 0}
+.cgr{display:grid;grid-template-columns:repeat(7,1fr);gap:3px}
+.cd{aspect-ratio:1;display:flex;flex-direction:column;align-items:center;justify-content:center;border-radius:10px;font-size:12px;font-weight:700;cursor:pointer;gap:2px;transition:all .15s;position:relative}
+.cd:hover{background:var(--s2);transform:scale(1.08)}
+.cd.tod{background:var(--ac);color:var(--tx);font-weight:800;box-shadow:0 3px 10px rgba(241,204,116,.4)}
+.cd .dr{display:flex;gap:2px;justify-content:center;flex-wrap:wrap;max-width:26px}
+.cd .d{width:4px;height:4px;border-radius:50%}
+.cd .am{position:absolute;top:2px;right:2px;font-size:7px;line-height:1}
+.wnav{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.wl{font-size:14px;font-weight:800}
+.wgr{display:flex;flex-direction:column;gap:8px}
+.wr{display:flex;gap:10px;align-items:flex-start}
+.wdl{width:36px;flex-shrink:0;text-align:center}
+.wdn{font-size:9px;color:var(--hi);font-weight:800;text-transform:uppercase}
+.wdd{font-size:18px;font-weight:800;line-height:1.1}
+.wdd.tod{color:var(--ac2)}
+.we{flex:1;display:flex;flex-direction:column;gap:3px;min-height:32px;border-left:2px solid var(--bd);padding-left:10px}
+.wev{padding:7px 11px;border-radius:10px;font-size:12px;font-weight:700;border-left:3px solid transparent;display:flex;justify-content:space-between;align-items:center;cursor:pointer;transition:all .15s}
+.wev:hover{transform:translateX(2px)}
+.wem{font-size:11px;color:var(--hi);padding:6px 10px;font-weight:600}
+.evl{display:flex;flex-direction:column;gap:8px}
+.evc{background:var(--sf);border-radius:var(--r);padding:14px 16px;border-left:4px solid var(--hi);transition:all .2s;box-shadow:var(--sh);border:1px solid var(--bd);border-left-width:4px}
+.evc:hover{box-shadow:var(--sh2);transform:translateY(-1px)}
+.evc.dn{opacity:.4;filter:grayscale(.4)}
+.evc.abs-s{border-left-color:var(--sc)!important;background:linear-gradient(135deg,rgba(212,136,10,.04),var(--sf))}
+.evc.abs-t{border-left-color:var(--tc)!important;background:linear-gradient(135deg,rgba(122,110,101,.04),var(--sf))}
+.evh{display:flex;align-items:center;gap:8px;margin-bottom:5px;flex-wrap:wrap}
+.evi{font-size:18px;flex-shrink:0}
+.evt{font-size:14px;font-weight:700;flex:1}
+.evd{font-family:'DM Mono',monospace;font-size:11px;color:var(--mu);font-weight:500}
+.tag{font-size:10px;font-weight:800;padding:3px 9px;border-radius:999px}
+.evn{font-size:12px;color:var(--mu);margin-top:5px;line-height:1.6;font-weight:600;padding:7px 10px;background:var(--s2);border-radius:8px;white-space:pre-wrap}
+.rr{display:flex;flex-wrap:wrap;gap:4px;margin-top:7px}
+.rc{font-size:10px;padding:3px 9px;border-radius:999px;background:var(--s2);color:var(--mu);border:1px solid var(--bd);font-weight:700}
+.eva{display:flex;gap:5px;margin-top:10px;padding-top:10px;border-top:1px solid var(--bd);flex-wrap:wrap}
+.eab{padding:5px 11px;border-radius:999px;border:1.5px solid var(--bd);background:transparent;color:var(--mu);font-size:11px;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;transition:all .15s}
+.eab:hover{border-color:var(--bd2);color:var(--tx);background:var(--s2)}
+.eab.danger:hover{color:#b71c1c;border-color:var(--rd)}
+.eab.ok:hover{color:#1b5e20;border-color:var(--gn)}
+.eab.mdb{color:var(--st);border-color:rgba(212,136,10,.3)}
+.eab.mdb:hover{background:var(--sb)}
+.msep{font-size:11px;font-weight:800;color:var(--hi);padding:14px 0 6px;display:flex;align-items:center;gap:8px}
+.msep::after{content:'';flex:1;height:1px;background:var(--bd)}
+.abbl{border-radius:10px;padding:10px 13px;margin-top:8px;font-size:12px;font-weight:600;line-height:1.7}
+.abbl.student{background:var(--sb);border-left:3px solid var(--sc)}
+.abbl.teacher{background:var(--tb);border-left:3px solid var(--tc)}
+.abbt{font-size:10px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;margin-bottom:5px}
+.abbl.student .abbt{color:var(--st)}
+.abbl.teacher .abbt{color:var(--tt)}
+.abbr2{display:flex;gap:8px;align-items:baseline;margin-bottom:3px}
+.abl2{font-size:10px;color:var(--mu);min-width:52px;flex-shrink:0}
+.abbv{font-size:12px;font-weight:700;color:var(--tx)}
+.mkb{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:999px;font-size:10px;font-weight:800;margin-top:4px}
+.mkb.pd{background:rgba(241,204,116,.2);color:#7a5e00;border:1px solid rgba(241,204,116,.45)}
+.mkb.dn2{background:rgba(129,199,132,.2);color:#1b5e20;border:1px solid rgba(129,199,132,.4)}
+.abst{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px}
+.absc{background:var(--sf);border-radius:var(--r);padding:13px 14px;box-shadow:var(--sh);border:1px solid var(--bd)}
+.absc.student{border-left:4px solid var(--sc)}
+.absc.teacher{border-left:4px solid var(--tc)}
+.absn{font-size:26px;font-weight:800;margin-bottom:2px}
+.absn.student{color:var(--sc)}
+.absn.teacher{color:var(--tc)}
+.absl{font-size:11px;color:var(--mu);font-weight:600}
+.abss{font-size:10px;color:var(--hi);font-weight:600;margin-top:2px}
+.afb{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+.af{padding:6px 14px;border-radius:999px;border:1.5px solid var(--bd);background:var(--s2);color:var(--mu);font-size:11px;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;transition:all .15s}
+.af:hover{border-color:var(--bd2)}
+.af.aa{background:var(--ac);color:var(--tx);border-color:var(--ac2)}
+.af.as{background:var(--sc);color:#fff;border-color:var(--sc)}
+.af.at{background:var(--tc);color:#fff;border-color:var(--tc)}
+.af.ap{background:rgba(241,204,116,.5);color:#7a5e00;border-color:var(--ac)}
+.msum{background:var(--tb);border:1.5px solid var(--tc);border-radius:var(--r2);padding:16px;margin-bottom:16px}
+.msum-hd{font-size:12px;font-weight:800;color:var(--tt);margin-bottom:12px}
+.msum-row{padding:9px 0;border-bottom:1px solid var(--bd);display:flex;align-items:flex-start;gap:10px}
+.msum-row:last-child{border:none;padding-bottom:0}
+.ri{font-size:13px;color:var(--mu);margin-bottom:16px;line-height:1.7;padding:13px 15px;background:var(--sf);border-radius:var(--r);border-left:4px solid var(--ac);font-weight:600;box-shadow:var(--sh)}
+.rform{background:var(--sf);border-radius:var(--r2);padding:18px;margin-bottom:16px;box-shadow:var(--sh2);border:1px solid var(--bd)}
+.rf{margin-bottom:12px}
+.rf label{display:block;font-size:10px;color:var(--mu);font-weight:800;letter-spacing:.07em;margin-bottom:6px;text-transform:uppercase}
+.rf input,.rf textarea{width:100%;background:var(--s2);border:1.5px solid var(--bd);border-radius:var(--r);padding:10px 13px;color:var(--tx);font-size:13px;font-family:'Nunito',sans-serif;font-weight:600;outline:none;transition:border-color .2s}
+.rf input:focus,.rf textarea:focus{border-color:var(--ac)}
+.rf textarea{resize:none;height:58px;line-height:1.5}
+.tg{display:flex;gap:6px;flex-wrap:wrap}
+.tb2{padding:6px 13px;border-radius:999px;border:1.5px solid var(--bd);background:var(--s2);color:var(--mu);font-size:11px;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;transition:all .15s}
+.tb2.on{background:var(--ac);border-color:var(--ac2);color:var(--tx)}
+.arb{width:100%;height:42px;background:var(--ac);color:var(--tx);border:none;border-radius:var(--r);font-size:13px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;margin-top:4px;box-shadow:0 4px 14px rgba(241,204,116,.4);transition:opacity .15s}
+.arb:hover{opacity:.85}
+.rcard{background:var(--sf);border-radius:var(--r);padding:13px 15px;margin-bottom:8px;border-left:4px solid var(--ac);display:flex;gap:12px;align-items:flex-start;box-shadow:var(--sh);border:1px solid var(--bd);border-left-width:4px}
+.rcard.bi{border-left-color:var(--hi)}
+.rb2{flex:1}
+.rkw{font-size:14px;font-weight:800;margin-bottom:4px;display:flex;align-items:center;gap:6px}
+.rmeta{font-size:11px;color:var(--mu);font-weight:600;line-height:1.8}
+.rnp{font-size:11px;color:var(--mu);font-style:italic;margin-top:3px;font-weight:600}
+.rdl{background:none;border:none;color:var(--hi);font-size:20px;cursor:pointer;line-height:1;padding:0;flex-shrink:0}
+.rdl:hover{color:var(--rd)}
+.btag{font-size:9px;padding:2px 6px;border-radius:5px;background:var(--s2);color:var(--hi);font-weight:700;border:1px solid var(--bd)}
+.mbg{position:fixed;inset:0;background:rgba(61,48,40,.55);z-index:100;display:flex;align-items:flex-end;justify-content:center;backdrop-filter:blur(7px)}
+.modal{background:var(--bg);border-radius:28px 28px 0 0;padding:24px 20px 44px;width:100%;max-width:500px;animation:up .24s cubic-bezier(.34,1.56,.64,1);max-height:92vh;overflow-y:auto}
+.mttl{font-size:17px;font-weight:800;margin-bottom:18px;display:flex;justify-content:space-between;align-items:center}
+.mcls{background:var(--s2);border:none;color:var(--mu);font-size:18px;cursor:pointer;width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.field{margin-bottom:13px}
+.field label{display:block;font-size:10px;color:var(--mu);font-weight:800;letter-spacing:.07em;margin-bottom:6px;text-transform:uppercase}
+.field input,.field textarea,.field select{width:100%;min-width:0;background:var(--sf);border:1.5px solid var(--bd);border-radius:var(--r);padding:10px 13px;color:var(--tx);font-size:14px;font-family:'Nunito',sans-serif;font-weight:600;outline:none;transition:border-color .2s}
+.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--ac)}
+.field textarea{resize:none;height:70px;line-height:1.5}
+.fr{display:flex;gap:10px;min-width:0}
+.fr .field{flex:1;min-width:0}
+.cpills{display:flex;gap:6px;flex-wrap:wrap}
+.cpill{padding:7px 13px;border-radius:999px;border:1.5px solid var(--bd);background:var(--s2);color:var(--mu);font-size:12px;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;transition:all .15s}
+.rpills{display:flex;gap:6px;flex-wrap:wrap}
+.rpb{padding:6px 13px;border-radius:999px;border:1.5px solid var(--bd);background:var(--s2);color:var(--mu);font-size:11px;font-weight:700;cursor:pointer;font-family:'Nunito',sans-serif;transition:all .15s}
+.rpb.on{background:var(--ac);border-color:var(--ac2);color:var(--tx)}
+.afsec{background:var(--s2);border-radius:var(--r);padding:14px;margin-bottom:13px;border:1.5px dashed var(--bd2)}
+.afsec.ss{border-color:rgba(212,136,10,.3);background:rgba(212,136,10,.05)}
+.afsec.ts{border-color:rgba(122,110,101,.3);background:rgba(122,110,101,.05)}
+.afstl{font-size:12px;font-weight:800;margin-bottom:12px}
+.afstl.student{color:var(--st)}
+.afstl.teacher{color:var(--tt)}
+.sbtn{width:100%;height:48px;background:var(--ac);color:var(--tx);border:none;border-radius:var(--r);font-size:15px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;box-shadow:0 4px 16px rgba(241,204,116,.4);margin-top:4px;display:flex;align-items:center;justify-content:center;gap:8px;transition:opacity .15s}
+.sbtn:hover{opacity:.87}
+.sbtn.sb{background:var(--sb);color:var(--st);border:2px solid var(--sc);box-shadow:none}
+.sbtn.tb{background:var(--tb);color:var(--tt);border:2px solid var(--tc);box-shadow:none}
+.uz{border:2px dashed var(--bd2);border-radius:var(--r);padding:28px;text-align:center;cursor:pointer;transition:all .2s;position:relative;margin-bottom:12px;background:var(--s2)}
+.uz:hover{border-color:var(--ac)}
+.uz input{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.uhi{font-size:13px;color:var(--mu);line-height:1.7;font-weight:600}
+.apirow{display:flex;gap:8px;margin-bottom:12px;align-items:center}
+.apii{flex:1;background:var(--sf);border:1.5px solid var(--bd);border-radius:var(--r);padding:9px 12px;color:var(--tx);font-size:12px;font-family:'DM Mono',monospace;outline:none}
+.apii:focus{border-color:var(--ac)}
+.apik{font-size:12px;color:#2e7d32;font-weight:700;flex-shrink:0}
+.spin{width:28px;height:28px;border:3px solid var(--bd2);border-top-color:var(--ac);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 12px}
+.ait{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px solid var(--bd)}
+.ait:last-child{border:none}
+.aic{width:18px;height:18px;cursor:pointer;accent-color:var(--ac);flex-shrink:0;margin-top:2px}
+.smb{background:rgba(241,204,116,.12);border:1.5px solid rgba(241,204,116,.35);border-radius:var(--r);padding:10px 14px;font-size:12px;color:#7a5e00;margin-bottom:12px;line-height:1.6;font-weight:700}
+.fab{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);width:calc(100% - 32px);max-width:468px;z-index:40;display:flex;gap:8px}
+.fabm{flex:1;height:52px;background:var(--ac);border:none;border-radius:var(--r2);color:var(--tx);font-size:14px;font-weight:800;cursor:pointer;font-family:'Nunito',sans-serif;box-shadow:0 6px 22px rgba(241,204,116,.5);transition:all .2s;display:flex;align-items:center;justify-content:center;gap:7px}
+.fabm:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(241,204,116,.6)}
+.fabs{width:52px;height:52px;border:2px solid var(--bd2);border-radius:var(--r2);font-size:24px;cursor:pointer;background:var(--sf);box-shadow:var(--sh2);transition:all .2s;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.fabs:hover{transform:translateY(-2px);background:var(--s2)}
+.fabs.s{border-color:var(--sc)}
+.fabs.t{border-color:var(--tc)}
+.empty{text-align:center;padding:36px 20px;color:var(--hi)}
+.ea{font-size:52px;display:block;margin:0 auto 10px;animation:float 3s ease-in-out infinite}
+.em{font-size:14px;font-weight:700;color:var(--mu);margin-bottom:4px}
+.es{font-size:12px;font-weight:600}
+.toast{position:fixed;bottom:84px;left:50%;transform:translateX(-50%);background:var(--sf);border:1.5px solid rgba(241,204,116,.5);color:#7a5e00;padding:10px 18px;border-radius:999px;font-size:12px;font-weight:700;z-index:200;max-width:340px;text-align:center;box-shadow:var(--sh2);white-space:nowrap;pointer-events:none}
+/* ICON PICKER */
+.ip-sec{font-size:10px;font-weight:800;color:var(--hi);letter-spacing:.08em;text-transform:uppercase;margin:14px 0 6px;padding-bottom:4px;border-bottom:1px solid var(--bd)}
+.ip-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin-bottom:4px}
+.ip-c{font-size:26px;text-align:center;cursor:pointer;border-radius:10px;padding:7px 4px;border:2px solid transparent;transition:all .15s;line-height:1}
+.ip-c:hover{background:var(--s2);transform:scale(1.12)}
+.ip-c.picked{border-color:var(--ac2);background:var(--s2)}
+/* ICON CUSTOMIZER GRID */
+.ic-grid{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:4px}
+.ic-btn{display:flex;flex-direction:column;align-items:center;gap:4px;padding:9px 12px;border-radius:var(--r);border:1.5px solid var(--bd);background:var(--s2);cursor:pointer;font-family:'Nunito',sans-serif;transition:all .15s;font-size:11px;font-weight:700;color:var(--mu)}
+.ic-btn:hover{border-color:var(--bd2);background:var(--s3)}
+.ic-btn .ic-em{font-size:22px}
 </style>
 </head>
 <body>
 <div class="app">
-
-<div class="header">
-  <div class="header-top">
-    <div class="logo">
-      <!-- 烏薩奇風格小兔子 logo SVG -->
-      <svg width="34" height="34" viewBox="0 0 34 34" fill="none" xmlns="http://www.w3.org/2000/svg" class="logo-svg">
-        <!-- 耳朵 -->
-        <ellipse cx="11" cy="7" rx="3.5" ry="5.5" fill="#F4E4B2" stroke="#4a3f35" stroke-width="1.5"/>
-        <ellipse cx="11" cy="7" rx="1.8" ry="3.8" fill="#f8d0d8"/>
-        <ellipse cx="23" cy="7" rx="3.5" ry="5.5" fill="#F4E4B2" stroke="#4a3f35" stroke-width="1.5"/>
-        <ellipse cx="23" cy="7" rx="1.8" ry="3.8" fill="#f8d0d8"/>
-        <!-- 臉 -->
-        <circle cx="17" cy="20" r="13" fill="#FBF7E9" stroke="#4a3f35" stroke-width="1.8"/>
-        <!-- 臉頰紅暈 -->
-        <ellipse cx="10" cy="22" rx="3" ry="2" fill="#f8c0c8" opacity="0.6"/>
-        <ellipse cx="24" cy="22" rx="3" ry="2" fill="#f8c0c8" opacity="0.6"/>
-        <!-- 眼睛 -->
-        <circle cx="13.5" cy="19" r="2" fill="#4a3f35"/>
-        <circle cx="20.5" cy="19" r="2" fill="#4a3f35"/>
-        <circle cx="14.2" cy="18.3" r="0.6" fill="white"/>
-        <circle cx="21.2" cy="18.3" r="0.6" fill="white"/>
-        <!-- 鼻子嘴巴 -->
-        <ellipse cx="17" cy="22" rx="1" ry="0.7" fill="#d4a0a8"/>
-        <path d="M14.5 24 Q17 26 19.5 24" stroke="#4a3f35" stroke-width="1.2" fill="none" stroke-linecap="round"/>
-      </svg>
-      <div class="logo-text">with<span>me</span></div>
+<div class="hdr">
+  <div class="hdr-top">
+    <div class="logo" onclick="openPicker('logo')" title="點擊換圖示">
+      <div class="logo-ic" id="ic-logo">🐰</div>
+      <div class="logo-tx">with<em>me</em></div>
     </div>
     <div class="date-chip" id="date-chip"></div>
   </div>
   <div class="nav">
-    <!-- 今日: 白熊臉 -->
-    <button class="nav-btn active" onclick="setView('today',this)">
-      <span class="nb-icon">
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="11" r="7.5" fill="currentColor" opacity="0.15" stroke="currentColor" stroke-width="1.4"/><circle cx="7" cy="4.5" r="2.5" fill="currentColor" opacity="0.15" stroke="currentColor" stroke-width="1.2"/><circle cx="13" cy="4.5" r="2.5" fill="currentColor" opacity="0.15" stroke="currentColor" stroke-width="1.2"/><circle cx="8" cy="10.5" r="1.2" fill="currentColor"/><circle cx="12" cy="10.5" r="1.2" fill="currentColor"/><path d="M7.5 13.5 Q10 15.5 12.5 13.5" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round"/></svg>
-      </span>
-      <span class="nb-lbl">今日</span>
-    </button>
-    <!-- 本週: 刺蝟 -->
-    <button class="nav-btn" onclick="setView('week',this)">
-      <span class="nb-icon">
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="12" r="7" fill="currentColor" opacity="0.12" stroke="currentColor" stroke-width="1.4"/><path d="M6 6 Q8 2 10 4 Q12 2 14 6" stroke="currentColor" stroke-width="1.3" fill="none" stroke-linecap="round"/><circle cx="8" cy="11" r="1.1" fill="currentColor"/><circle cx="12" cy="11" r="1.1" fill="currentColor"/><ellipse cx="10" cy="13.5" rx="1.2" ry="0.7" fill="currentColor" opacity="0.5"/></svg>
-      </span>
-      <span class="nb-lbl">本週</span>
-    </button>
-    <!-- 月曆: 月份熊 -->
-    <button class="nav-btn" onclick="setView('month',this)">
-      <span class="nb-icon">
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2" y="5" width="16" height="13" rx="3" fill="currentColor" opacity="0.12" stroke="currentColor" stroke-width="1.4"/><line x1="2" y1="9" x2="18" y2="9" stroke="currentColor" stroke-width="1.2"/><circle cx="6" cy="7" r="1.2" fill="currentColor"/><circle cx="14" cy="7" r="1.2" fill="currentColor"/><circle cx="6.5" cy="13" r="1" fill="currentColor" opacity="0.7"/><circle cx="10" cy="13" r="1" fill="currentColor" opacity="0.7"/><circle cx="13.5" cy="13" r="1" fill="currentColor" opacity="0.7"/></svg>
-      </span>
-      <span class="nb-lbl">月曆</span>
-    </button>
-    <!-- 全部: 小兔子 -->
-    <button class="nav-btn" onclick="setView('all',this)">
-      <span class="nb-icon">
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="12" r="7" fill="currentColor" opacity="0.12" stroke="currentColor" stroke-width="1.4"/><ellipse cx="7" cy="5.5" rx="2" ry="3.5" fill="currentColor" opacity="0.12" stroke="currentColor" stroke-width="1.2"/><ellipse cx="13" cy="5.5" rx="2" ry="3.5" fill="currentColor" opacity="0.12" stroke="currentColor" stroke-width="1.2"/><circle cx="8.5" cy="11.5" r="1.1" fill="currentColor"/><circle cx="11.5" cy="11.5" r="1.1" fill="currentColor"/><path d="M8 14 Q10 15.5 12 14" stroke="currentColor" stroke-width="1.1" fill="none" stroke-linecap="round"/></svg>
-      </span>
-      <span class="nb-lbl">全部</span>
-    </button>
-    <!-- 請假: 貓臉 -->
-    <button class="nav-btn" onclick="setView('absence',this)">
-      <span class="nb-icon">
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="11.5" r="7.5" fill="currentColor" opacity="0.12" stroke="currentColor" stroke-width="1.4"/><path d="M5 5.5 L6.5 8.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><path d="M15 5.5 L13.5 8.5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><circle cx="8" cy="11" r="1.1" fill="currentColor"/><circle cx="12" cy="11" r="1.1" fill="currentColor"/><path d="M8.5 14 Q10 15.5 11.5 14" stroke="currentColor" stroke-width="1.1" fill="none" stroke-linecap="round"/></svg>
-      </span>
-      <span class="nb-lbl">請假</span>
-    </button>
-    <!-- 規則: 閃光熊 -->
-    <button class="nav-btn" onclick="setView('rules',this)">
-      <span class="nb-icon">
-        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="12" r="6.5" fill="currentColor" opacity="0.12" stroke="currentColor" stroke-width="1.4"/><circle cx="6.5" cy="6" r="2.2" fill="currentColor" opacity="0.12" stroke="currentColor" stroke-width="1.2"/><circle cx="13.5" cy="6" r="2.2" fill="currentColor" opacity="0.12" stroke="currentColor" stroke-width="1.2"/><path d="M10 4 L10.5 7 L13 6 L11 8.5 L13.5 9.5 L10.5 10 L11 13 L10 11 L9 13 L9.5 10 L6.5 9.5 L9 8.5 L7 6 L9.5 7 Z" fill="currentColor" opacity="0.5"/></svg>
-      </span>
-      <span class="nb-lbl">規則</span>
-    </button>
+    <button class="nb active" onclick="setView('today',this)"><span class="ni" id="ic-today">☀️</span><span>今日</span></button>
+    <button class="nb" onclick="setView('week',this)"><span class="ni" id="ic-week">📋</span><span>本週</span></button>
+    <button class="nb" onclick="setView('month',this)"><span class="ni" id="ic-month">🗓️</span><span>月曆</span></button>
+    <button class="nb" onclick="setView('all',this)"><span class="ni" id="ic-all">📚</span><span>全部</span></button>
+    <button class="nb" onclick="setView('absence',this)"><span class="ni" id="ic-abs">🏥</span><span>請假</span></button>
+    <button class="nb" onclick="setView('rules',this)"><span class="ni" id="ic-rules">⚡</span><span>規則</span></button>
   </div>
-  <div class="quick-bar">
-    <input class="quick-input" id="qtxt" placeholder="快速新增… 例：親師座談 5/20" autocomplete="off"/>
-    <button class="icon-btn" onclick="openUpload()" title="上傳檔案">
-      <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="6" width="14" height="11" rx="2.5" fill="none" stroke="#9F8F82" stroke-width="1.5"/><path d="M10 3 L10 11 M7.5 5.5 L10 3 L12.5 5.5" stroke="#9F8F82" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </button>
-    <button class="icon-btn accent" onclick="quickAdd()">
-      <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="8" fill="none" stroke="#4a3f35" stroke-width="1.4"/><line x1="10" y1="6.5" x2="10" y2="13.5" stroke="#4a3f35" stroke-width="1.8" stroke-linecap="round"/><line x1="6.5" y1="10" x2="13.5" y2="10" stroke="#4a3f35" stroke-width="1.8" stroke-linecap="round"/></svg>
-    </button>
+  <div class="qbar">
+    <input class="qi" id="qtxt" placeholder="快速新增… 例：親師座談 5/20" autocomplete="off"/>
+    <button class="ibtn" onclick="openUpload()">📎</button>
+    <button class="ibtn ac" onclick="quickAdd()">＋</button>
   </div>
-  <div id="preview"></div>
+  <div id="pv"></div>
+</div>
+<div class="sec" id="main-section"></div>
 </div>
 
-<div class="section" id="main-section"></div>
+<div class="fab">
+  <button class="fabs s" id="fab-s" onclick="openAbsModal('student')" title="學生請假">📝</button>
+  <button class="fabm" onclick="openAdd()"><span id="ic-fabm">✨</span> 新增事件</button>
+  <button class="fabs t" id="fab-t" onclick="openAbsModal('teacher')" title="老師請假">🏫</button>
 </div>
 
-<!-- FAB -->
-<div class="fab-area">
-  <!-- 學生請假：小藍刺蝟 -->
-  <button class="fab-abs student" onclick="openAbsModal('student')" title="學生請假">
-    <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-      <circle cx="14" cy="17" r="9" fill="#d0ecf8" stroke="#4a3f35" stroke-width="1.5"/>
-      <path d="M8 9 Q10 4 14 6 Q18 4 20 9" stroke="#4a3f35" stroke-width="1.4" fill="none" stroke-linecap="round"/>
-      <circle cx="11" cy="16" r="1.5" fill="#4a3f35"/>
-      <circle cx="17" cy="16" r="1.5" fill="#4a3f35"/>
-      <ellipse cx="8.5" cy="18" rx="2.2" ry="1.4" fill="#f8c0c8" opacity="0.7"/>
-      <ellipse cx="19.5" cy="18" rx="2.2" ry="1.4" fill="#f8c0c8" opacity="0.7"/>
-      <path d="M11 20 Q14 22 17 20" stroke="#4a3f35" stroke-width="1.2" fill="none" stroke-linecap="round"/>
-      <circle cx="14" cy="26" r="2.5" fill="#d0ecf8" stroke="#4a3f35" stroke-width="1.2"/>
-    </svg>
-  </button>
-  <button class="fab-main" onclick="openAdd()">
-    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" style="flex-shrink:0"><line x1="9" y1="3" x2="9" y2="15" stroke="#4a3f35" stroke-width="2" stroke-linecap="round"/><line x1="3" y1="9" x2="15" y2="9" stroke="#4a3f35" stroke-width="2" stroke-linecap="round"/></svg>
-    新增事件
-  </button>
-  <!-- 老師請假：小白熊 -->
-  <button class="fab-abs teacher" onclick="openAbsModal('teacher')" title="老師請假">
-    <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
-      <circle cx="14" cy="17" r="9" fill="#F4E4B2" stroke="#4a3f35" stroke-width="1.5"/>
-      <circle cx="9" cy="9" r="3.5" fill="#F4E4B2" stroke="#4a3f35" stroke-width="1.4"/>
-      <circle cx="19" cy="9" r="3.5" fill="#F4E4B2" stroke="#4a3f35" stroke-width="1.4"/>
-      <circle cx="11" cy="16.5" r="1.5" fill="#4a3f35"/>
-      <circle cx="17" cy="16.5" r="1.5" fill="#4a3f35"/>
-      <ellipse cx="8" cy="18.5" rx="2.2" ry="1.4" fill="#f8c0c8" opacity="0.7"/>
-      <ellipse cx="20" cy="18.5" rx="2.2" ry="1.4" fill="#f8c0c8" opacity="0.7"/>
-      <path d="M11 20.5 Q14 22.5 17 20.5" stroke="#4a3f35" stroke-width="1.2" fill="none" stroke-linecap="round"/>
-      <ellipse cx="14" cy="22" rx="3" ry="1.5" fill="#9F8F82" opacity="0.2"/>
-    </svg>
-  </button>
-</div>
-
-<!-- MAIN MODAL (events) -->
-<div class="modal-bg" id="add-modal" style="display:none" onclick="if(event.target===this)closeAdd()">
+<!-- ADD MODAL -->
+<div class="mbg" id="add-modal" style="display:none" onclick="if(event.target===this)closeAdd()">
 <div class="modal">
-  <div class="modal-title"><span><span id="modal-icon">🌟</span> <span id="modal-ttl">新增事件</span></span><button class="modal-close" onclick="closeAdd()">×</button></div>
-  <div class="field"><label>📌 TITLE</label><input id="f-title" placeholder="事件名稱…"/></div>
-  <div class="field-row">
-    <div class="field"><label>📅 DATE</label><input id="f-date" type="date"/></div>
-    <div class="field"><label>⏰ TIME</label><input id="f-time" type="time"/></div>
+  <div class="mttl"><span><span id="modal-icon">✨</span> <span id="modal-ttl">新增事件</span></span><button class="mcls" onclick="closeAdd()">×</button></div>
+  <div class="field"><label>📌 標題</label><input id="f-title" placeholder="事件名稱…"/></div>
+  <div class="fr">
+    <div class="field"><label>📅 日期</label><input id="f-date" type="date"/></div>
+    <div class="field"><label>⏰ 時間</label><input id="f-time" type="time"/></div>
   </div>
-  <div class="field"><label>🏷️ CATEGORY</label><div class="cat-pills" id="cat-pills"></div></div>
-  <div class="field"><label>🔔 提醒</label><div class="rem-pills" id="rem-pills"></div></div>
-  <div class="field"><label>📝 NOTES</label><textarea id="f-note" placeholder="備注…"></textarea></div>
-  <button class="save-btn" onclick="saveEvent()">💾 儲存事件</button>
+  <div class="field"><label>🏷️ 分類</label><div class="cpills" id="cat-pills"></div></div>
+  <div class="field"><label>🔔 提醒</label><div class="rpills" id="rem-pills"></div></div>
+  <div class="field"><label>📝 備注</label><textarea id="f-note" placeholder="備注…"></textarea></div>
+  <button class="sbtn" onclick="saveEvent()">💾 儲存</button>
 </div>
 </div>
 
-<!-- ABSENCE MODAL -->
-<div class="modal-bg" id="abs-modal" style="display:none" onclick="if(event.target===this)closeAbsModal()">
-<div class="modal" id="abs-modal-inner">
-  <!-- filled dynamically -->
-</div>
+<!-- ABS MODAL -->
+<div class="mbg" id="abs-modal" style="display:none" onclick="if(event.target===this)closeAbsModal()">
+<div class="modal" id="abs-modal-inner"></div>
 </div>
 
 <!-- UPLOAD MODAL -->
-<div class="modal-bg" id="upload-modal" style="display:none" onclick="if(event.target===this)closeUpload()">
+<div class="mbg" id="upload-modal" style="display:none" onclick="if(event.target===this)closeUpload()">
 <div class="modal">
-  <div class="modal-title"><span>🤖 AI 讀取檔案</span><button class="modal-close" onclick="closeUpload()">×</button></div>
-  <div class="api-row">
-    <input type="password" class="api-inp" id="api-key" placeholder="Anthropic API Key（sk-ant-...）"/>
-    <button onclick="saveKey()" style="padding:7px 14px;border:1.5px solid var(--border);border-radius:999px;background:var(--surface2);color:var(--muted);font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;font-family:'Nunito',sans-serif">儲存</button>
-    <span class="api-saved" id="key-status"></span>
+  <div class="mttl"><span>🤖 AI 讀取檔案</span><button class="mcls" onclick="closeUpload()">×</button></div>
+  <div class="apirow">
+    <input type="password" class="apii" id="api-key" placeholder="Anthropic API Key（sk-ant-...）"/>
+    <button onclick="saveKey()" style="padding:7px 14px;border:1.5px solid var(--bd);border-radius:999px;background:var(--s2);color:var(--mu);font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;font-family:'Nunito',sans-serif">儲存</button>
+    <span class="apik" id="key-status"></span>
   </div>
   <div id="upload-body"></div>
 </div>
 </div>
 
-<script>
-// ═══════════════════════════
-// CONFIG
-// ═══════════════════════════
-const CATS={
-  work:    {label:'工作',  icon:'💼',color:'#5ab4d6',bg:'rgba(90,180,214,.13)', tc:'#1a5a78',remDef:[1]},
-  meeting: {label:'座談',  icon:'🤝',color:'#9c7fd6',bg:'rgba(156,127,214,.13)',tc:'#4a3070',remDef:[7,1]},
-  event:   {label:'活動',  icon:'🎉',color:'#6abf78',bg:'rgba(106,191,120,.13)',tc:'#2a6040',remDef:[3,1]},
-  deadline:{label:'截止',  icon:'⏳',color:'#e0708a',bg:'rgba(224,112,138,.13)',tc:'#802050',remDef:[7,3,1]},
-  other:   {label:'其他',  icon:'📌',color:'#e0a840',bg:'rgba(224,168,64,.13)', tc:'#7a5010',remDef:[0]},
-};
-const REM_OPTIONS=[{l:'當天',d:0},{l:'1天前',d:1},{l:'3天前',d:3},{l:'7天前',d:7},{l:'2週前',d:14}];
-const DOW_ZH=['一','二','三','四','五','六','日'];
-const MONTH_ICONS=['🎍','🌸','🌼','🌷','🌻','🌞','🌊','🍉','🍂','🎃','🍁','⛄'];
+<!-- ICON PICKER MODAL -->
+<div class="mbg" id="picker-modal" style="display:none" onclick="if(event.target===this)closePicker()">
+<div class="modal">
+  <div class="mttl"><span>🎨 選擇圖示 — <span id="picker-lbl" style="color:var(--mu);font-size:14px"></span></span><button class="mcls" onclick="closePicker()">×</button></div>
+  <div id="picker-body"></div>
+</div>
+</div>
 
-const BUILTIN_RULES=[
+<script>
+// ═══ ICON SYSTEM ══════════════════════════
+const EMOJI_SETS=[
+  {label:'動物',icons:['🐰','🐻','🐼','🐨','🐱','🐶','🐸','🐵','🦊','🐯','🦁','🐮','🐷','🐔','🐧','🐦','🦆','🦉','🦋','🐌','🐛','🐝','🐠','🐳','🐬','🦀','🦞','🐢','🦎','🦖']},
+  {label:'植物花朵',icons:['🌸','🌺','🌻','🌹','🌷','🍀','🌿','🍃','🌱','🌲','🌳','🍄','🌴','🎋','🎍','🌾','🍁','🍂','🌵','🌊']},
+  {label:'食物',icons:['🍰','🎂','🍩','🍪','🍫','🍭','🍬','🍡','🍓','🍇','🍊','🍋','🍒','🍑','🍔','🍕','🌮','🧇','☕','🧋','🍵','🧁','🥐','🍦','🍧','🍨']},
+  {label:'物品',icons:['⭐','💫','✨','🎯','🎀','🎁','🎈','🎉','🏆','🥇','💎','🔮','📚','📖','✏️','📝','📌','🔔','📅','🗓️','⏰','📱','💡','🔑','🎪','🎠','🎡','🎢']},
+  {label:'天氣自然',icons:['☀️','🌙','⭐','🌈','❄️','🔥','💧','🌊','⚡','🌪️','🌤️','⛅','🌥️','🌦️','🌧️','⛈️','🌩️','🌨️','🌫️','🌬️']},
+  {label:'表情符號',icons:['😊','😄','🥰','😍','🤩','😎','🤗','😇','🥳','😋','😜','🤪','😏','😌','🥺','🤭','😴','🤔','☺️','🙂','😀','😃','🤓','😺','😸','😻','🐱','🐶']},
+  {label:'符號',icons:['💖','💕','💗','💓','💞','💝','🌟','💫','✨','🌈','🎯','🏫','🏠','🏥','📋','📊','💼','🎒','🧳','🔧','⚙️','🛠️','🔬','🎓','📐','📏','🖊️','🖋️','📮','📯']},
+];
+
+const TARGETS={
+  logo:     {id:'ic-logo',  key:'ic_logo',  def:'🐰', lbl:'App 圖示'},
+  today:    {id:'ic-today', key:'ic_today', def:'☀️', lbl:'今日 Tab'},
+  week:     {id:'ic-week',  key:'ic_week',  def:'📋', lbl:'本週 Tab'},
+  month:    {id:'ic-month', key:'ic_month', def:'🗓️', lbl:'月曆 Tab'},
+  all:      {id:'ic-all',   key:'ic_all',   def:'📚', lbl:'全部 Tab'},
+  abs:      {id:'ic-abs',   key:'ic_abs',   def:'🏥', lbl:'請假 Tab'},
+  rules:    {id:'ic-rules', key:'ic_rules', def:'⚡', lbl:'規則 Tab'},
+  fabm:     {id:'ic-fabm',  key:'ic_fabm',  def:'✨', lbl:'新增按鈕'},
+  fabs:     {id:'fab-s',    key:'ic_fabs',  def:'📝', lbl:'學生請假按鈕'},
+  fabt:     {id:'fab-t',    key:'ic_fabt',  def:'🏫', lbl:'老師請假按鈕'},
+  cat_work: {key:'ic_cwork',def:'💼', lbl:'工作分類'},
+  cat_meet: {key:'ic_cmeet',def:'🤝', lbl:'座談分類'},
+  cat_ev:   {key:'ic_cev',  def:'🎉', lbl:'活動分類'},
+  cat_dead: {key:'ic_cdead',def:'⏳', lbl:'截止分類'},
+  cat_oth:  {key:'ic_coth', def:'📌', lbl:'其他分類'},
+};
+
+function gi(key){return localStorage.getItem(key)||Object.values(TARGETS).find(t=>t.key===key)?.def||'⭐';}
+
+function loadIcons(){
+  Object.entries(TARGETS).forEach(([,cfg])=>{
+    if(!cfg.id)return;
+    const el=document.getElementById(cfg.id);
+    if(el)el.textContent=gi(cfg.key);
+  });
+}
+
+let _pTarget=null;
+function openPicker(tid){
+  _pTarget=tid;
+  const cfg=TARGETS[tid];
+  const cur=gi(cfg.key);
+  document.getElementById('picker-lbl').textContent=cfg.lbl;
+  let html='';
+  EMOJI_SETS.forEach(set=>{
+    html+=`<div class="ip-sec">${set.label}</div><div class="ip-grid">`;
+    html+=set.icons.map(e=>`<div class="ip-c${e===cur?' picked':''}" onclick="pickIcon('${e}')">${e}</div>`).join('');
+    html+='</div>';
+  });
+  document.getElementById('picker-body').innerHTML=html;
+  document.getElementById('picker-modal').style.display='flex';
+}
+function closePicker(){document.getElementById('picker-modal').style.display='none';_pTarget=null;}
+function pickIcon(ic){
+  if(!_pTarget)return;
+  const cfg=TARGETS[_pTarget];
+  localStorage.setItem(cfg.key,ic);
+  if(cfg.id){const el=document.getElementById(cfg.id);if(el)el.textContent=ic;}
+  // Update CATS if category
+  const catMap={cat_work:'work',cat_meet:'meeting',cat_ev:'event',cat_dead:'deadline',cat_oth:'other'};
+  if(catMap[_pTarget]&&CATS[catMap[_pTarget]]){CATS[catMap[_pTarget]].icon=ic;render();}
+  closePicker();
+  toast('✅ 圖示已更新！');
+}
+
+// ═══ CONFIG ════════════════════════════════
+const CATS={
+  work:    {label:'工作',  icon:gi('ic_cwork'), color:'#5ab4d6',bg:'rgba(90,180,214,.13)', tc:'#1a5a78',remDef:[1]},
+  meeting: {label:'座談',  icon:gi('ic_cmeet'), color:'#9c7fd6',bg:'rgba(156,127,214,.13)',tc:'#4a3070',remDef:[7,1]},
+  event:   {label:'活動',  icon:gi('ic_cev'),   color:'#6abf78',bg:'rgba(106,191,120,.13)',tc:'#2a6040',remDef:[3,1]},
+  deadline:{label:'截止',  icon:gi('ic_cdead'), color:'#e0708a',bg:'rgba(224,112,138,.13)',tc:'#802050',remDef:[7,3,1]},
+  other:   {label:'其他',  icon:gi('ic_coth'),  color:'#e0a840',bg:'rgba(224,168,64,.13)', tc:'#7a5010',remDef:[0]},
+};
+const REMO=[{l:'當天',d:0},{l:'1天前',d:1},{l:'3天前',d:3},{l:'7天前',d:7},{l:'2週前',d:14}];
+const DOW=['一','二','三','四','五','六','日'];
+const MI=['🎍','🌸','🌼','🌷','🌻','🌞','🌊','🍉','🍂','🎃','🍁','⛄'];
+const BR=[
   {id:'b1',kw:'親師座談',cat:'meeting',rems:[7,1],note:'請提前通知家長（一週前），前一天再次確認。',builtin:true},
   {id:'b2',kw:'PTA',cat:'meeting',rems:[7,1],note:'請提前通知家長（一週前），前一天再次確認。',builtin:true},
   {id:'b3',kw:'一對一',cat:'meeting',rems:[7,1],note:'請提前通知家長（一週前），前一天再次確認。',builtin:true},
@@ -451,753 +396,443 @@ const BUILTIN_RULES=[
   {id:'b9',kw:'放假',cat:'other',rems:[0],note:'',builtin:true},
 ];
 
-// ═══════════════════════════
-// STATE
-// ═══════════════════════════
 function ls(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d;}catch{return d;}}
 function lss(k,v){localStorage.setItem(k,JSON.stringify(v));}
-
-let events      = ls('wc4_events',[]);
-let absences    = ls('wc4_abs',[]);      // absence records
-let customRules = ls('wc4_rules',[]);
-let editId=null,selRems=[],selCat='work';
-let rfRems=[1],rfCat='work';
-let absFilter='all';
-let currentView='today';
-let editAbsId=null;
+let events=ls('wc6_ev',[]),absences=ls('wc6_ab',[]),customRules=ls('wc6_ru',[]);
+let editId=null,selRems=[],selCat='work',rfRems=[1],rfCat='work',absF='all',currentView='today',editAbsId=null;
 const today=new Date();today.setHours(0,0,0,0);
-let calYear=today.getFullYear(),calMonth=today.getMonth();
-let weekStart=(()=>{const d=new Date(today);d.setDate(today.getDate()-(today.getDay()||7)+1);return d;})();
-
-function saveEv(){lss('wc4_events',events);}
-function saveAbs(){lss('wc4_abs',absences);}
-function saveRules(){lss('wc4_rules',customRules);}
-function fmtDate(d){return`${d.getFullYear()}-${p2(d.getMonth()+1)}-${p2(d.getDate())}`;}
+let calY=today.getFullYear(),calM=today.getMonth();
+let wkS=(()=>{const d=new Date(today);d.setDate(today.getDate()-(today.getDay()||7)+1);return d;})();
+function saveEv(){lss('wc6_ev',events);}
+function saveAbs(){lss('wc6_ab',absences);}
+function saveRu(){lss('wc6_ru',customRules);}
+function fD(d){return`${d.getFullYear()}-${p2(d.getMonth()+1)}-${p2(d.getDate())}`;}
 function p2(n){return String(n).padStart(2,'0');}
-function fmtDisp(iso){if(!iso)return'';const[,m,d]=iso.split('-');return`${+m}/${+d}`;}
-function addDays(d,n){const r=new Date(d);r.setDate(r.getDate()+n);return r;}
-function isoToday(){return fmtDate(today);}
-function allRules(){return[...customRules,...BUILTIN_RULES];}
-function matchRule(t){for(const r of allRules())if(t.includes(r.kw))return r;return null;}
+function fS(iso){if(!iso)return'';const[,m,d]=iso.split('-');return`${+m}/${+d}`;}
+function aD(d,n){const r=new Date(d);r.setDate(r.getDate()+n);return r;}
+function iTd(){return fD(today);}
+function allR(){return[...customRules,...BR];}
+function mR(t){for(const r of allR())if(t.includes(r.kw))return r;return null;}
 
 document.getElementById('date-chip').textContent=today.toLocaleDateString('zh-TW',{month:'long',day:'numeric',weekday:'short'});
 
-// ═══════════════════════════
 // QUICK INPUT
-// ═══════════════════════════
-document.getElementById('qtxt').addEventListener('input',function(){showPreview(this.value);});
+document.getElementById('qtxt').addEventListener('input',function(){showPV(this.value);});
 document.getElementById('qtxt').addEventListener('keydown',e=>{if(e.key==='Enter')quickAdd();});
-
-function parseQuick(raw){
+function parseQ(raw){
   let date=null;const yr=today.getFullYear();
   const m=raw.match(/(\d{1,2})\/(\d{1,2})/);
   if(m)date=`${yr}-${p2(m[1])}-${p2(m[2])}`;
   if(!date){
-    if(/今天/.test(raw))date=isoToday();
-    if(/明天/.test(raw))date=fmtDate(addDays(today,1));
+    if(/今天/.test(raw))date=iTd();
+    if(/明天/.test(raw))date=fD(aD(today,1));
     const wm=raw.match(/週([一二三四五六日天])/);
-    if(wm){const wmap={'一':1,'二':2,'三':3,'四':4,'五':5,'六':6,'日':0,'天':0};const t=wmap[wm[1]];let diff=t-today.getDay();if(diff<=0)diff+=7;date=fmtDate(addDays(today,diff));}
+    if(wm){const W={'一':1,'二':2,'三':3,'四':4,'五':5,'六':6,'日':0,'天':0};const t=W[wm[1]];let df=t-today.getDay();if(df<=0)df+=7;date=fD(aD(today,df));}
   }
   let time=null;const tm=raw.match(/(\d{1,2})(?::(\d{2}))?\s*(am|pm)?/i);
   if(tm&&parseInt(tm[1])<=24){let h=parseInt(tm[1]),mn=parseInt(tm[2]||0);if(tm[3]&&/pm/i.test(tm[3])&&h<12)h+=12;time=`${p2(h)}:${p2(mn)}`;}
   let title=raw.replace(/\d{1,2}\/\d{1,2}/,'').replace(/(\d{1,2})(?::\d{2})?\s*(?:am|pm)?/i,'').replace(/今天|明天|週[一二三四五六日天]/,'').trim()||raw.trim();
-  const rule=matchRule(title)||matchRule(raw);
-  return{title,date,time,rule};
+  return{title,date,time,rule:mR(title)||mR(raw)};
 }
-
-function showPreview(raw){
-  const box=document.getElementById('preview');
-  if(!raw.trim()){box.className='';box.innerHTML='';return;}
-  const{title,date,time,rule}=parseQuick(raw);
-  const cat=rule?rule.cat:'work';const c=CATS[cat];
+function showPV(raw){
+  const b=document.getElementById('pv');
+  if(!raw.trim()){b.className='';b.innerHTML='';return;}
+  const{title,date,time,rule}=parseQ(raw);
+  const c=CATS[rule?rule.cat:'work'];
   const rems=rule?rule.rems:c.remDef;
-  box.className='show';
-  box.innerHTML=`
-    <div style="display:flex;align-items:center;gap:6px"><span style="font-size:16px">${c.icon}</span><b style="font-size:13px">${title||'—'}</b></div>
-    <b style="font-size:12px">${date?fmtDisp(date):'未偵測'}</b>
+  b.className='on';
+  b.innerHTML=`<div style="display:flex;align-items:center;gap:6px"><span style="font-size:15px">${c.icon}</span><b>${title||'—'}</b></div>
+    <b style="font-size:12px">${date?fS(date):'未偵測'}</b>
     <span class="tag" style="background:${c.bg};color:${c.tc}">${c.icon} ${c.label}</span>
-    <span style="font-size:11px;color:var(--muted);font-weight:600">🔔 ${rems.map(r=>r===0?'當天':r+'天前').join('、')}</span>
-    ${rule?`<span class="rule-badge">⚡ ${rule.kw}</span>`:''}`;
+    <span style="font-size:11px;color:var(--mu);font-weight:600">🔔 ${rems.map(r=>r===0?'當天':r+'天前').join('、')}</span>
+    ${rule?`<span class="rb">⚡ ${rule.kw}</span>`:''}`;
 }
-
 function quickAdd(){
   const raw=document.getElementById('qtxt').value.trim();if(!raw)return;
-  const{title,date,time,rule}=parseQuick(raw);
-  const cat=rule?rule.cat:'work';
+  const{title,date,time,rule}=parseQ(raw);const cat=rule?rule.cat:'work';
   events.unshift({id:Date.now(),title,date,time,cat,rems:rule?rule.rems:CATS[cat].remDef,note:rule?rule.note:'',done:false});
   saveEv();render();
-  document.getElementById('qtxt').value='';
-  document.getElementById('preview').className='';document.getElementById('preview').innerHTML='';
+  document.getElementById('qtxt').value='';document.getElementById('pv').className='';document.getElementById('pv').innerHTML='';
   if(rule)toast(`⚡ 套用規則「${rule.kw}」`);
 }
-
 function toast(msg){
   document.querySelectorAll('.toast').forEach(t=>t.remove());
   const t=document.createElement('div');t.className='toast';t.textContent=msg;
   document.body.appendChild(t);setTimeout(()=>t.remove(),3000);
 }
 
-// ═══════════════════════════
 // VIEWS
-// ═══════════════════════════
-function setView(v,btn){
-  currentView=v;
-  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
-  btn.classList.add('active');render();
-}
-
+function setView(v,btn){currentView=v;document.querySelectorAll('.nb').forEach(b=>b.classList.remove('active'));btn.classList.add('active');render();}
 function render(){
   const sec=document.getElementById('main-section');
   if(currentView==='today')        sec.innerHTML=renderToday();
   else if(currentView==='week')    sec.innerHTML=renderWeek();
   else if(currentView==='month')   sec.innerHTML=renderMonth();
-  else if(currentView==='absence') sec.innerHTML=renderAbsence();
+  else if(currentView==='absence') sec.innerHTML=renderAbs();
   else if(currentView==='rules')   {sec.innerHTML=renderRules();buildRFCats();buildRFRems();}
   else                             sec.innerHTML=renderAll();
-  document.querySelectorAll('.week-ev[data-id]').forEach(el=>{
-    el.addEventListener('click',()=>openAdd(+el.dataset.id));
-  });
-  checkNotifications();
+  document.querySelectorAll('.wev[data-id]').forEach(el=>{el.addEventListener('click',()=>openAdd(+el.dataset.id));});
+  checkNotifs();
 }
 
 // TODAY
 function renderToday(){
-  const iso=isoToday();
-  const todayEvs=events.filter(e=>e.date===iso&&!e.done);
-  const reminders=events.filter(e=>{
-    if(!e.date||e.done)return false;
-    const diff=Math.round((new Date(e.date+'T00:00:00')-today)/864e5);
-    return diff>0&&(e.rems||[]).includes(diff);
-  });
-  // absences today
-  const todayAbs=absences.filter(a=>a.date===iso);
-  let html='';
-
-  // absence alerts first
-  if(todayAbs.length){
-    html+=`<div class="section-hd"><span class="section-title">🚨 今日請假</span></div>`;
-    todayAbs.forEach(a=>{
-      const isS=a.type==='student';
-      html+=`<div class="absence-alert ${isS?'student':'teacher'}">
-        <div style="font-size:20px">${isS?'📝':'🏫'}</div>
-        <div>
-          <div class="alert-title" style="color:${isS?'var(--student-tc)':'var(--teacher-tc)'}">${isS?'【學生請假】':'【老師請假】'} ${a.name}</div>
-          ${isS&&a.makeup?`<div class="alert-sub">📚 待補進度：${a.makeup}</div>`:''}
-          ${!isS&&a.sub?`<div class="alert-sub">👤 代課：${a.sub}</div>`:''}
-          ${a.note?`<div class="alert-sub">📝 ${a.note}</div>`:''}
-          ${isS&&!a.makeupDone?`<div style="margin-top:5px"><span class="makeup-badge pending">⏳ 補課待安排</span></div>`:''}
-          ${isS&&a.makeupDone?`<div style="margin-top:5px"><span class="makeup-badge done">✅ 已補課</span></div>`:''}
-        </div>
-      </div>`;
+  const iso=iTd();
+  const todEvs=events.filter(e=>e.date===iso&&!e.done);
+  const rems=events.filter(e=>{if(!e.date||e.done)return false;const diff=Math.round((new Date(e.date+'T00:00:00')-today)/864e5);return diff>0&&(e.rems||[]).includes(diff);});
+  const todAbs=absences.filter(a=>a.date===iso);
+  const pendMk=absences.filter(a=>a.type==='student'&&!a.makeupDone&&a.makeup);
+  let h='';
+  if(todAbs.length){
+    h+=`<div class="shd"><span class="stl">🚨 今日請假</span></div>`;
+    todAbs.forEach(a=>{const isS=a.type==='student';
+      h+=`<div class="abal ${isS?'student':'teacher'}"><div style="font-size:20px">${isS?'📝':'🏫'}</div>
+        <div><div class="alt" style="color:${isS?'var(--st)':'var(--tt)'}">${isS?'學生請假':'老師請假'} · ${a.name}</div>
+        ${isS&&a.makeup?`<div class="als">📚 ${a.makeup}</div>`:''}
+        ${!isS&&a.sub?`<div class="als">👤 代課：${a.sub}</div>`:''}
+        ${a.note?`<div class="als">📝 ${a.note}</div>`:''}
+        ${isS?`<span class="mkb ${a.makeupDone?'dn2':'pd'}">${a.makeupDone?'✅ 已補課':'⏳ 待補課'}</span>`:''}</div></div>`;
     });
   }
-
-  // pending makeups
-  const pendingMakeup=absences.filter(a=>a.type==='student'&&!a.makeupDone&&a.makeup);
-  if(pendingMakeup.length){
-    html+=`<div class="section-hd" style="margin-top:${todayAbs.length?14:4}px"><span class="section-title">📚 待補進度</span></div>`;
-    pendingMakeup.forEach(a=>{
-      html+=`<div style="background:var(--student-bg);border:1.5px solid var(--student-c);border-radius:var(--r);padding:10px 14px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center">
-        <div>
-          <div style="font-size:13px;font-weight:700;color:var(--student-tc)">📝 ${a.name}</div>
-          <div style="font-size:11px;color:var(--muted);font-weight:600;margin-top:2px">📚 ${a.makeup} &nbsp;·&nbsp; 假期：${fmtDisp(a.date)}</div>
-        </div>
-        <button class="ev-act-btn makeup-done-btn" onclick="markMakeupDone(${a.id})" style="white-space:nowrap;font-size:11px">✅ 已補</button>
-      </div>`;
+  if(pendMk.length){
+    h+=`<div class="shd" style="margin-top:${todAbs.length?14:4}px"><span class="stl">📚 待補進度</span></div>`;
+    pendMk.forEach(a=>{
+      h+=`<div style="background:var(--sb);border:1.5px solid var(--sc);border-radius:var(--r);padding:10px 14px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center">
+        <div><div style="font-size:13px;font-weight:700;color:var(--st)">📝 ${a.name}</div>
+        <div style="font-size:11px;color:var(--mu);font-weight:600;margin-top:2px">${a.makeup} · ${fS(a.date)}</div></div>
+        <button class="eab mdb" onclick="markMkDone(${a.id})" style="white-space:nowrap">✅ 已補</button></div>`;
     });
   }
-
-  if(reminders.length){
-    html+=`<div class="section-hd" style="margin-top:${(todayAbs.length||pendingMakeup.length)?14:4}px"><span class="section-title">🔔 今日提醒</span></div>`;
-    reminders.forEach(ev=>{
-      const c=CATS[ev.cat]||CATS.other;
-      const diff=Math.round((new Date(ev.date+'T00:00:00')-today)/864e5);
-      html+=`<div class="alert-card"><div class="alert-icon">${c.icon}</div>
-        <div><div class="alert-title">${ev.title}</div>
-        <div class="alert-sub">📅 ${diff}天後（${fmtDisp(ev.date)}）${ev.note?' · '+ev.note.slice(0,25):''}</div></div></div>`;
+  if(rems.length){
+    h+=`<div class="shd" style="margin-top:${(todAbs.length||pendMk.length)?14:4}px"><span class="stl">🔔 今日提醒</span></div>`;
+    rems.forEach(ev=>{const c=CATS[ev.cat]||CATS.other;const diff=Math.round((new Date(ev.date+'T00:00:00')-today)/864e5);
+      h+=`<div class="alc"><div class="ali">${c.icon}</div><div><div class="alt">${ev.title}</div><div class="als">${diff}天後（${fS(ev.date)}）${ev.note?' · '+ev.note.slice(0,25):''}</div></div></div>`;
     });
   }
-
-  const topCount=todayAbs.length+pendingMakeup.length+reminders.length;
-  html+=`<div class="section-hd" style="margin-top:${topCount?16:4}px"><span class="section-title">☀️ 今日事件</span></div>`;
-  if(!todayEvs.length)html+=`<div class="empty">
-    <svg width="70" height="70" viewBox="0 0 70 70" fill="none" style="display:block;margin:0 auto 10px;animation:float 3s ease-in-out infinite">
-      <circle cx="35" cy="42" r="24" fill="#FBF7E9" stroke="#4a3f35" stroke-width="2"/>
-      <circle cx="22" cy="20" r="8" fill="#FBF7E9" stroke="#4a3f35" stroke-width="1.8"/>
-      <circle cx="48" cy="20" r="8" fill="#FBF7E9" stroke="#4a3f35" stroke-width="1.8"/>
-      <ellipse cx="26" cy="39" rx="4" ry="4" fill="#4a3f35"/>
-      <ellipse cx="44" cy="39" rx="4" ry="4" fill="#4a3f35"/>
-      <ellipse cx="27.5" cy="37.5" rx="1.5" ry="1.5" fill="white"/>
-      <ellipse cx="45.5" cy="37.5" rx="1.5" ry="1.5" fill="white"/>
-      <ellipse cx="19" cy="43" rx="5" ry="3.5" fill="#f8c0c8" opacity="0.65"/>
-      <ellipse cx="51" cy="43" rx="5" ry="3.5" fill="#f8c0c8" opacity="0.65"/>
-      <path d="M27 48 Q35 54 43 48" stroke="#4a3f35" stroke-width="2" fill="none" stroke-linecap="round"/>
-    </svg>
-    <div class="empty-msg">今天沒有事件</div><div class="empty-sub">輕鬆的一天！</div></div>`;
-  else html+=renderCards(todayEvs);
-  const upcoming=events.filter(e=>{
-    if(!e.date||e.done)return false;
-    const diff=Math.round((new Date(e.date+'T00:00:00')-today)/864e5);
-    return diff>0&&diff<=7;
-  }).sort((a,b)=>a.date.localeCompare(b.date));
-  if(upcoming.length){html+=`<div class="section-hd" style="margin-top:20px"><span class="section-title">📅 未來7天</span></div>`;html+=renderCards(upcoming);}
-  return html;
+  const topN=todAbs.length+pendMk.length+rems.length;
+  h+=`<div class="shd" style="margin-top:${topN?16:4}px"><span class="stl">☀️ 今日事件</span></div>`;
+  if(!todEvs.length)h+=`<div class="empty"><span class="ea">🌸</span><div class="em">今天沒有事件</div><div class="es">輕鬆的一天！</div></div>`;
+  else h+=renderCards(todEvs);
+  const up=events.filter(e=>{if(!e.date||e.done)return false;const d=Math.round((new Date(e.date+'T00:00:00')-today)/864e5);return d>0&&d<=7;}).sort((a,b)=>a.date.localeCompare(b.date));
+  if(up.length){h+=`<div class="shd" style="margin-top:20px"><span class="stl">📅 未來7天</span></div>`;h+=renderCards(up);}
+  return h;
 }
-
-// ABSENCE VIEW
-function renderAbsence(){
-  const allAbs=[...absences].sort((a,b)=>b.date.localeCompare(a.date));
-  const stuAbs=absences.filter(a=>a.type==='student');
-  const tchAbs=absences.filter(a=>a.type==='teacher');
-  const pending=stuAbs.filter(a=>!a.makeupDone&&a.makeup);
-
-  // 月底老師請假彙整：本月所有老師請假
-  const thisMonthPrefix=`${today.getFullYear()}-${p2(today.getMonth()+1)}`;
-  const thisMonthTeacher=tchAbs.filter(a=>a.date.startsWith(thisMonthPrefix));
-
-  const filtered = absFilter==='all'? allAbs
-    : absFilter==='student'? allAbs.filter(a=>a.type==='student')
-    : absFilter==='teacher'? allAbs.filter(a=>a.type==='teacher')
-    : allAbs.filter(a=>a.type==='student'&&!a.makeupDone&&a.makeup);
-
-  // month-end summary block
-  const summaryBlock = thisMonthTeacher.length ? `
-    <div style="background:var(--teacher-bg);border:1.5px solid var(--teacher-c);border-radius:var(--r2);padding:16px;margin-bottom:16px">
-      <div style="font-size:12px;font-weight:800;color:var(--teacher-tc);margin-bottom:12px;display:flex;align-items:center;gap:6px">
-        📋 ${today.getMonth()+1}月 老師請假彙整（共 ${thisMonthTeacher.length} 筆）
-      </div>
-      ${thisMonthTeacher.map(a=>`
-        <div style="padding:9px 0;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;gap:10px">
-          <div style="font-size:22px;flex-shrink:0">🏫</div>
-          <div style="flex:1">
-            <div style="font-size:13px;font-weight:700;color:var(--teacher-tc)">${a.name}</div>
-            <div style="font-size:11px;color:var(--muted);font-weight:600;margin-top:2px">
-              📅 ${fmtDisp(a.date)}${a.date2?' → '+fmtDisp(a.date2):''}
-              ${a.reason?' · '+a.reason:''}
-            </div>
-            ${a.sub?`<div style="font-size:11px;color:var(--teacher-tc);font-weight:700;margin-top:3px">👤 代課：${a.sub}${a.subConfirmed?' ✅':' ⏳'}</div>`:'<div style="font-size:11px;color:var(--hint);margin-top:3px">⚠️ 尚未安排代課</div>'}
-            ${a.subplan?`<div style="font-size:11px;color:var(--muted);margin-top:2px">📝 ${a.subplan.slice(0,40)}${a.subplan.length>40?'…':''}</div>`:''}
-          </div>
-        </div>`).join('')}
-    </div>` : '';
-
-  return`<div>
-    <div class="abs-stats">
-      <div class="abs-stat student">
-        <div class="abs-stat-num student">${stuAbs.length}</div>
-        <div class="abs-stat-lbl">📝 學生請假</div>
-        <div class="abs-stat-sub">待補：${pending.length} 筆</div>
-      </div>
-      <div class="abs-stat teacher">
-        <div class="abs-stat-num teacher">${tchAbs.length}</div>
-        <div class="abs-stat-lbl">🏫 老師請假</div>
-        <div class="abs-stat-sub">本月：${thisMonthTeacher.length} 筆</div>
-      </div>
-    </div>
-
-    ${summaryBlock}
-
-    <div class="abs-filter-bar">
-      <button class="abs-filter ${absFilter==='all'?'active-all':''}" onclick="setAbsFilter('all',this)">全部</button>
-      <button class="abs-filter ${absFilter==='student'?'active-student':''}" onclick="setAbsFilter('student',this)">📝 學生</button>
-      <button class="abs-filter ${absFilter==='teacher'?'active-teacher':''}" onclick="setAbsFilter('teacher',this)">🏫 老師</button>
-      <button class="abs-filter ${absFilter==='pending'?'active-pending':''}" onclick="setAbsFilter('pending',this)">⏳ 待補課</button>
-    </div>
-
-    ${filtered.length?filtered.map(a=>absCard(a)).join('')
-      :`<div class="empty">
-        <svg width="70" height="70" viewBox="0 0 70 70" fill="none" style="display:block;margin:0 auto 10px;animation:float 3s ease-in-out infinite">
-          <circle cx="35" cy="42" r="22" fill="#F4E4B2" stroke="#4a3f35" stroke-width="2"/>
-          <ellipse cx="22" cy="21" rx="7" ry="10" fill="#F4E4B2" stroke="#4a3f35" stroke-width="1.8"/>
-          <ellipse cx="22" cy="21" rx="4" ry="7" fill="#f8d0d8"/>
-          <ellipse cx="48" cy="21" rx="7" ry="10" fill="#F4E4B2" stroke="#4a3f35" stroke-width="1.8"/>
-          <ellipse cx="48" cy="21" rx="4" ry="7" fill="#f8d0d8"/>
-          <ellipse cx="27" cy="39" rx="4" ry="4" fill="#4a3f35"/>
-          <ellipse cx="43" cy="39" rx="4" ry="4" fill="#4a3f35"/>
-          <ellipse cx="28.5" cy="37.5" rx="1.5" ry="1.5" fill="white"/>
-          <ellipse cx="44.5" cy="37.5" rx="1.5" ry="1.5" fill="white"/>
-          <ellipse cx="19" cy="44" rx="5" ry="3" fill="#f8c0c8" opacity="0.65"/>
-          <ellipse cx="51" cy="44" rx="5" ry="3" fill="#f8c0c8" opacity="0.65"/>
-          <ellipse cx="35" cy="45" rx="3" ry="2" fill="#d4a0a8"/>
-          <path d="M28 49 Q35 55 42 49" stroke="#4a3f35" stroke-width="2" fill="none" stroke-linecap="round"/>
-        </svg>
-        <div class="empty-msg">沒有請假紀錄</div><div class="empty-sub">按下下方按鈕新增</div></div>`}
-  </div>`;
-}
-
-function setAbsFilter(f){
-  absFilter=f;render();
-}
-// override to accept element too
-function setAbsFilter(f,btn){
-  absFilter=f;
-  render(); // re-render will rebuild buttons with correct active class
-}
-
-function absCard(a){
-  const isS=a.type==='student';
-  return`<div class="ev-card ${isS?'abs-student':'abs-teacher'}">
-    <div class="ev-head">
-      <span class="ev-cat-icon">${isS?'📝':'🏫'}</span>
-      <span class="ev-title">${a.name}</span>
-      <span class="ev-date-lbl">${fmtDisp(a.date)}${a.date2?'→'+fmtDisp(a.date2):''}</span>
-      <span class="tag ${isS?'abs-tag-student':'abs-tag-teacher'}">${isS?'學生':'老師'}</span>
-    </div>
-    ${isS?`
-      <div class="abs-block student">
-        <div class="abs-block-title">📚 補課資訊</div>
-        ${a.makeup?`<div class="abs-block-row"><span class="abs-block-lbl">待補進度</span><span class="abs-block-val">${a.makeup}</span></div>`:'<div style="font-size:12px;color:var(--muted)">（未填寫補課進度）</div>'}
-        ${a.makeupDate?`<div class="abs-block-row"><span class="abs-block-lbl">補課日期</span><span class="abs-block-val">${fmtDisp(a.makeupDate)}</span></div>`:''}
-        <div style="margin-top:6px">${a.makeupDone?`<span class="makeup-badge done">✅ 已補課完成</span>`:`<span class="makeup-badge pending">⏳ 待補課</span>`}</div>
-      </div>`:''}
-    ${!isS?`
-      <div class="abs-block teacher">
-        <div class="abs-block-title">👤 代課安排</div>
-        ${a.sub?`<div class="abs-block-row"><span class="abs-block-lbl">代課老師</span><span class="abs-block-val">${a.sub}</span></div>`:'<div style="font-size:12px;color:var(--muted)">（尚未安排代課）</div>'}
-        ${a.subplan?`<div class="abs-block-row"><span class="abs-block-lbl">交接事項</span><span class="abs-block-val">${a.subplan.slice(0,50)}</span></div>`:''}
-        ${a.subConfirmed?`<div style="margin-top:4px"><span class="makeup-badge done">✅ 代課已確認</span></div>`:`<div style="margin-top:4px"><span class="makeup-badge pending">⏳ 待確認</span></div>`}
-      </div>`:''}
-    ${a.note?`<div class="ev-note">📝 ${a.note}</div>`:''}
-    <div class="ev-actions">
-      ${isS&&!a.makeupDone?`<button class="ev-act-btn makeup-done-btn" onclick="markMakeupDone(${a.id})">✅ 已補課</button>`:''}
-      ${!isS&&!a.subConfirmed?`<button class="ev-act-btn" style="color:var(--teacher-tc);border-color:var(--teacher-c)" onclick="markSubConfirmed(${a.id})">✅ 代課確認</button>`:''}
-      <button class="ev-act-btn" onclick="openAbsModal(null,${a.id})">✏️ 編輯</button>
-      <button class="ev-act-btn danger" onclick="delAbs(${a.id})">🗑️ 刪除</button>
-    </div>
-  </div>`;
-}
-
-function markMakeupDone(id){
-  absences=absences.map(a=>a.id===id?{...a,makeupDone:true}:a);
-  saveAbs();render();toast('✅ 已標記補課完成！');
-}
-function markSubConfirmed(id){
-  absences=absences.map(a=>a.id===id?{...a,subConfirmed:true}:a);
-  saveAbs();render();toast('✅ 代課已確認！');
-}
-function delAbs(id){if(!confirm('確定刪除？'))return;absences=absences.filter(a=>a.id!==id);saveAbs();render();}
 
 // WEEK
 function renderWeek(){
-  const end=addDays(weekStart,6);
-  let html=`<div class="week-nav">
-    <button class="cal-nav-btn" onclick="weekPrev()">‹</button>
-    <span class="week-lbl">📋 ${weekStart.getMonth()+1}/${weekStart.getDate()} – ${end.getMonth()+1}/${end.getDate()}</span>
-    <button class="cal-nav-btn" onclick="weekNext()">›</button>
-  </div><div class="week-grid">`;
+  const end=aD(wkS,6);
+  let h=`<div class="wnav"><button class="cnb" onclick="wkP()">‹</button><span class="wl">📋 ${wkS.getMonth()+1}/${wkS.getDate()} – ${end.getMonth()+1}/${end.getDate()}</span><button class="cnb" onclick="wkN()">›</button></div><div class="wgr">`;
   for(let i=0;i<7;i++){
-    const d=addDays(weekStart,i);const iso=fmtDate(d);const isT=iso===isoToday();
-    const dayEvs=events.filter(e=>e.date===iso&&!e.done);
-    const dayAbs=absences.filter(a=>a.date===iso);
-    html+=`<div class="week-row">
-      <div class="week-day-label"><div class="week-day-name">${DOW_ZH[i]}</div><div class="week-day-num${isT?' today':''}">${d.getDate()}</div></div>
-      <div class="week-events">`;
-    dayAbs.forEach(a=>{
-      const isS=a.type==='student';
-      html+=`<div class="week-ev" style="background:${isS?'var(--student-bg)':'var(--teacher-bg)'};border-left-color:${isS?'var(--student-c)':'var(--teacher-c)'}" onclick="openAbsModal(null,${a.id})">${isS?'🎒':'👩‍🏫'} ${a.name}</div>`;
-    });
-    if(!dayEvs.length&&!dayAbs.length)html+=`<span class="week-empty">—</span>`;
-    dayEvs.forEach(ev=>{const c=CATS[ev.cat]||CATS.other;html+=`<div class="week-ev" style="background:${c.bg};border-left-color:${c.color}" data-id="${ev.id}">${c.icon} ${ev.title}</div>`;});
-    html+=`</div></div>`;
+    const d=aD(wkS,i);const iso=fD(d);const isT=iso===iTd();
+    const dEvs=events.filter(e=>e.date===iso&&!e.done);
+    const dAbs=absences.filter(a=>a.date===iso);
+    h+=`<div class="wr"><div class="wdl"><div class="wdn">${DOW[i]}</div><div class="wdd${isT?' tod':''}">${d.getDate()}</div></div><div class="we">`;
+    dAbs.forEach(a=>{const isS=a.type==='student';h+=`<div class="wev" style="background:${isS?'var(--sb)':'var(--tb)'};border-left-color:${isS?'var(--sc)':'var(--tc)'}" onclick="openAbsModal(null,${a.id})">${isS?'📝':'🏫'} ${a.name}</div>`;});
+    if(!dEvs.length&&!dAbs.length)h+=`<span class="wem">—</span>`;
+    dEvs.forEach(ev=>{const c=CATS[ev.cat]||CATS.other;h+=`<div class="wev" style="background:${c.bg};border-left-color:${c.color}" data-id="${ev.id}">${c.icon} ${ev.title}</div>`;});
+    h+=`</div></div>`;
   }
-  return html+'</div>';
+  return h+'</div>';
 }
-function weekPrev(){weekStart=addDays(weekStart,-7);render();}
-function weekNext(){weekStart=addDays(weekStart,7);render();}
+function wkP(){wkS=aD(wkS,-7);render();}
+function wkN(){wkS=aD(wkS,7);render();}
 
 // MONTH
 function renderMonth(){
-  const first=(new Date(calYear,calMonth,1).getDay()||7)-1;
-  const days=new Date(calYear,calMonth+1,0).getDate();
-  let html=`<div class="cal-wrap">
-    <div class="cal-nav">
-      <button class="cal-nav-btn" onclick="calPrev()">‹</button>
-      <span class="cal-month-lbl">${MONTH_ICONS[calMonth]} ${calYear}年${calMonth+1}月</span>
-      <button class="cal-nav-btn" onclick="calNext()">›</button>
-    </div>
-    <div class="cal-dow">${DOW_ZH.map(d=>`<div class="cal-dow-cell">${d}</div>`).join('')}</div>
-    <div class="cal-grid">`;
-  html+=Array(first).fill('<div></div>').join('');
+  const first=(new Date(calY,calM,1).getDay()||7)-1;
+  const days=new Date(calY,calM+1,0).getDate();
+  let h=`<div class="cal"><div class="cnav"><button class="cnb" onclick="calP()">‹</button><span class="cml">${MI[calM]} ${calY}年${calM+1}月</span><button class="cnb" onclick="calN()">›</button></div>
+    <div class="cdow">${DOW.map(d=>`<div class="cdw">${d}</div>`).join('')}</div><div class="cgr">`;
+  h+=Array(first).fill('<div></div>').join('');
   for(let d=1;d<=days;d++){
-    const iso=`${calYear}-${p2(calMonth+1)}-${p2(d)}`;
+    const iso=`${calY}-${p2(calM+1)}-${p2(d)}`;
     const evs=events.filter(e=>e.date===iso&&!e.done);
     const abs=absences.filter(a=>a.date===iso);
-    const isT=iso===isoToday();
-    const dots=evs.slice(0,3).map(e=>`<div class="dot" style="background:${(CATS[e.cat]||CATS.other).color}"></div>`).join('');
-    const absMark=abs.length?abs.map(a=>a.type==='student'?'<span style="font-size:7px">🎒</span>':'<span style="font-size:7px">👩‍🏫</span>').join(''):'';
-    html+=`<div class="cal-day${isT?' today':''}" onclick="openAdd(null,'${iso}')">
-      ${absMark?`<div class="abs-mark">${absMark}</div>`:''}
-      <span>${d}</span>
-      ${dots?`<div class="dot-row">${dots}</div>`:''}
+    const isT=iso===iTd();
+    const dots=evs.slice(0,4).map(e=>`<div class="d" style="background:${(CATS[e.cat]||CATS.other).color}"></div>`).join('');
+    const am=abs.length?abs.map(a=>a.type==='student'?'📝':'🏫').join(''):'';
+    h+=`<div class="cd${isT?' tod':''}" onclick="openAdd(null,'${iso}')">
+      ${am?`<div class="am">${am}</div>`:''}
+      <span>${d}</span>${dots?`<div class="dr">${dots}</div>`:''}
     </div>`;
   }
-  html+=`</div></div>`;
-  const mo=`${calYear}-${p2(calMonth+1)}`;
+  h+=`</div></div>`;
+  const mo=`${calY}-${p2(calM+1)}`;
   const moEvs=events.filter(e=>e.date?.startsWith(mo)).sort((a,b)=>a.date.localeCompare(b.date));
   const moAbs=absences.filter(a=>a.date?.startsWith(mo)).sort((a,b)=>a.date.localeCompare(b.date));
-  if(moAbs.length){
-    html+=`<div class="section-hd"><span class="section-title">🏥 本月請假</span></div>`;
-    html+=moAbs.map(a=>absCard(a)).join('');
-  }
-  html+=moEvs.length?`<div class="section-hd" style="margin-top:${moAbs.length?14:0}px"><span class="section-title">📅 本月事件</span></div>`+renderCards(moEvs):`<div class="empty">
-    <svg width="60" height="60" viewBox="0 0 60 60" fill="none" style="display:block;margin:0 auto 10px;animation:float 3s ease-in-out infinite">
-      <circle cx="30" cy="36" r="20" fill="#fffbe8" stroke="#4a3f35" stroke-width="1.8"/>
-      <circle cx="30" cy="36" r="20" fill="#F4E4B2" stroke="#4a3f35" stroke-width="1.8"/>
-      <circle cx="20.5" cy="17.5" r="6.5" fill="#F4E4B2" stroke="#4a3f35" stroke-width="1.6"/>
-      <circle cx="39.5" cy="17.5" r="6.5" fill="#F4E4B2" stroke="#4a3f35" stroke-width="1.6"/>
-      <ellipse cx="23.5" cy="34" rx="3.5" ry="3.5" fill="#4a3f35"/>
-      <ellipse cx="36.5" cy="34" rx="3.5" ry="3.5" fill="#4a3f35"/>
-      <ellipse cx="24.5" cy="32.8" rx="1.2" ry="1.2" fill="white"/>
-      <ellipse cx="37.5" cy="32.8" rx="1.2" ry="1.2" fill="white"/>
-      <ellipse cx="14" cy="38" rx="4" ry="2.5" fill="#f8c0c8" opacity="0.65"/>
-      <ellipse cx="46" cy="38" rx="4" ry="2.5" fill="#f8c0c8" opacity="0.65"/>
-      <path d="M24 41 Q30 46.5 36 41" stroke="#4a3f35" stroke-width="1.8" fill="none" stroke-linecap="round"/>
-      <text x="30" y="55" text-anchor="middle" font-size="8" fill="#9F8F82" font-family="Nunito,sans-serif" font-weight="700">${MONTH_ICONS[calMonth]}</text>
-    </svg>
-    <div class="empty-msg">這個月沒有事件</div></div>`;
-  return html;
+  if(moAbs.length){h+=`<div class="shd"><span class="stl">🏥 本月請假</span></div>`;h+=moAbs.map(a=>absCard(a)).join('');}
+  h+=moEvs.length?`<div class="shd" style="margin-top:${moAbs.length?14:0}px"><span class="stl">📅 本月事件</span></div>`+renderCards(moEvs):`<div class="empty"><span class="ea">${MI[calM]}</span><div class="em">這個月沒有事件</div></div>`;
+  return h;
 }
-function calPrev(){calMonth--;if(calMonth<0){calMonth=11;calYear--;}render();}
-function calNext(){calMonth++;if(calMonth>11){calMonth=0;calYear++;}render();}
+function calP(){calM--;if(calM<0){calM=11;calY--;}render();}
+function calN(){calM++;if(calM>11){calM=0;calY++;}render();}
+
+// ABSENCE
+function renderAbs(){
+  const all=[...absences].sort((a,b)=>b.date.localeCompare(a.date));
+  const stuA=absences.filter(a=>a.type==='student');
+  const tchA=absences.filter(a=>a.type==='teacher');
+  const pend=stuA.filter(a=>!a.makeupDone&&a.makeup);
+  const moP=`${today.getFullYear()}-${p2(today.getMonth()+1)}`;
+  const moTch=tchA.filter(a=>a.date.startsWith(moP));
+  const filt=absF==='all'?all:absF==='student'?all.filter(a=>a.type==='student'):absF==='teacher'?all.filter(a=>a.type==='teacher'):all.filter(a=>a.type==='student'&&!a.makeupDone&&a.makeup);
+  const sb=moTch.length?`<div class="msum"><div class="msum-hd">📋 ${today.getMonth()+1}月 老師請假彙整（${moTch.length}筆）</div>
+    ${moTch.map(a=>`<div class="msum-row"><div style="font-size:20px">🏫</div><div style="flex:1">
+      <div style="font-size:13px;font-weight:700;color:var(--tt)">${a.name}</div>
+      <div style="font-size:11px;color:var(--mu);font-weight:600;margin-top:2px">📅 ${fS(a.date)}${a.date2?' → '+fS(a.date2):''}${a.reason?' · '+a.reason:''}</div>
+      ${a.sub?`<div style="font-size:11px;font-weight:700;color:var(--tt);margin-top:3px">👤 代課：${a.sub} ${a.subConfirmed?'✅':'⏳'}</div>`:'<div style="font-size:11px;color:var(--hi);margin-top:3px">⚠️ 尚未安排代課</div>'}
+      ${a.subplan?`<div style="font-size:11px;color:var(--mu);margin-top:2px">📝 ${a.subplan.slice(0,42)}${a.subplan.length>42?'…':''}</div>`:''}
+    </div></div>`).join('')}</div>`:'';
+  return`<div>
+    <div class="abst">
+      <div class="absc student"><div class="absn student">${stuA.length}</div><div class="absl">📝 學生請假</div><div class="abss">待補：${pend.length}筆</div></div>
+      <div class="absc teacher"><div class="absn teacher">${tchA.length}</div><div class="absl">🏫 老師請假</div><div class="abss">本月：${moTch.length}筆</div></div>
+    </div>
+    ${sb}
+    <div class="afb">
+      <button class="af${absF==='all'?' aa':''}" onclick="setAbsF('all')">全部</button>
+      <button class="af${absF==='student'?' as':''}" onclick="setAbsF('student')">📝 學生</button>
+      <button class="af${absF==='teacher'?' at':''}" onclick="setAbsF('teacher')">🏫 老師</button>
+      <button class="af${absF==='pending'?' ap':''}" onclick="setAbsF('pending')">⏳ 待補課</button>
+    </div>
+    ${filt.length?filt.map(a=>absCard(a)).join(''):'<div class="empty"><span class="ea">🌼</span><div class="em">沒有請假紀錄</div><div class="es">按下方按鈕新增</div></div>'}
+  </div>`;
+}
+function setAbsF(f){absF=f;render();}
+
+function absCard(a){
+  const isS=a.type==='student';
+  return`<div class="evc ${isS?'abs-s':'abs-t'}">
+    <div class="evh">
+      <span class="evi">${isS?'📝':'🏫'}</span>
+      <span class="evt">${a.name}</span>
+      <span class="evd">${fS(a.date)}${a.date2?'→'+fS(a.date2):''}</span>
+      <span class="tag" style="background:${isS?'var(--sb)':'var(--tb)'};color:${isS?'var(--st)':'var(--tt)'};border:1px solid ${isS?'rgba(212,136,10,.2)':'rgba(122,110,101,.2)'}">${isS?'學生':'老師'}</span>
+    </div>
+    ${isS?`<div class="abbl student"><div class="abbt">📚 補課資訊</div>
+      ${a.makeup?`<div class="abbr2"><span class="abl2">待補進度</span><span class="abbv">${a.makeup}</span></div>`:'<div style="font-size:12px;color:var(--mu)">（未填寫）</div>'}
+      ${a.makeupDate?`<div class="abbr2"><span class="abl2">補課日期</span><span class="abbv">${fS(a.makeupDate)}</span></div>`:''}
+      <span class="mkb ${a.makeupDone?'dn2':'pd'}">${a.makeupDone?'✅ 已補課':'⏳ 待補課'}</span></div>`:
+    `<div class="abbl teacher"><div class="abbt">👤 代課安排</div>
+      ${a.sub?`<div class="abbr2"><span class="abl2">代課老師</span><span class="abbv">${a.sub}</span></div>`:'<div style="font-size:12px;color:var(--mu)">（尚未安排）</div>'}
+      ${a.subplan?`<div class="abbr2"><span class="abl2">交接事項</span><span class="abbv">${a.subplan.slice(0,40)}</span></div>`:''}
+      <span class="mkb ${a.subConfirmed?'dn2':'pd'}">${a.subConfirmed?'✅ 代課確認':'⏳ 待確認'}</span></div>`}
+    ${a.note?`<div class="evn">📝 ${a.note}</div>`:''}
+    <div class="eva">
+      ${isS&&!a.makeupDone?`<button class="eab mdb" onclick="markMkDone(${a.id})">✅ 已補課</button>`:''}
+      ${!isS&&!a.subConfirmed?`<button class="eab mdb" onclick="markSubC(${a.id})" style="color:var(--tt);border-color:var(--tc)">✅ 代課確認</button>`:''}
+      <button class="eab" onclick="openAbsModal(null,${a.id})">✏️ 編輯</button>
+      <button class="eab danger" onclick="delAbs(${a.id})">🗑️ 刪除</button>
+    </div>
+  </div>`;
+}
+function markMkDone(id){absences=absences.map(a=>a.id===id?{...a,makeupDone:true}:a);saveAbs();render();toast('✅ 已補課！');}
+function markSubC(id){absences=absences.map(a=>a.id===id?{...a,subConfirmed:true}:a);saveAbs();render();toast('✅ 代課確認！');}
+function delAbs(id){if(!confirm('確定刪除？'))return;absences=absences.filter(a=>a.id!==id);saveAbs();render();}
 
 // ALL
 function renderAll(){
   const sorted=[...events].sort((a,b)=>(a.date||'9999').localeCompare(b.date||'9999'));
-  if(!sorted.length)return`<div class="empty">
-    <svg width="70" height="70" viewBox="0 0 70 70" fill="none" style="display:block;margin:0 auto 10px;animation:float 3s ease-in-out infinite">
-      <circle cx="35" cy="44" r="22" fill="#d0ecf8" stroke="#4a3f35" stroke-width="2"/>
-      <path d="M20 22 Q24 12 28 18 Q32 10 35 16 Q38 10 42 18 Q46 12 50 22" stroke="#4a3f35" stroke-width="2" fill="none" stroke-linecap="round"/>
-      <ellipse cx="27" cy="41" rx="4" ry="4" fill="#4a3f35"/>
-      <ellipse cx="43" cy="41" rx="4" ry="4" fill="#4a3f35"/>
-      <ellipse cx="28.5" cy="39.5" rx="1.5" ry="1.5" fill="white"/>
-      <ellipse cx="44.5" cy="39.5" rx="1.5" ry="1.5" fill="white"/>
-      <ellipse cx="19" cy="45" rx="5" ry="3" fill="#f8c0c8" opacity="0.65"/>
-      <ellipse cx="51" cy="45" rx="5" ry="3" fill="#f8c0c8" opacity="0.65"/>
-      <path d="M28 49 Q35 55 42 49" stroke="#4a3f35" stroke-width="2" fill="none" stroke-linecap="round"/>
-      <!-- 小魚裝飾 -->
-      <ellipse cx="35" cy="60" rx="5" ry="2.5" fill="#d0ecf8" stroke="#4a3f35" stroke-width="1.2"/>
-    </svg>
-    <div class="empty-msg">還沒有任何事件</div><div class="empty-sub">快速輸入或按下 ＋ 開始吧！</div></div>`;
-  let html='',lastMo='';
+  if(!sorted.length)return`<div class="empty"><span class="ea">🌟</span><div class="em">還沒有任何事件</div><div class="es">快速輸入或按下 ＋ 開始！</div></div>`;
+  let h='',lastM='';
   sorted.forEach(ev=>{
     const mo=ev.date?ev.date.slice(0,7):'';
-    if(mo!==lastMo){const idx=ev.date?parseInt(ev.date.slice(5,7))-1:0;html+=`<div class="month-sep">${MONTH_ICONS[idx]||'📅'} ${ev.date?parseInt(ev.date.slice(5,7))+'月':'無日期'}</div>`;lastMo=mo;}
-    html+=renderCard(ev);
+    if(mo!==lastM){const idx=ev.date?parseInt(ev.date.slice(5,7))-1:0;h+=`<div class="msep">${MI[idx]||'📅'} ${ev.date?parseInt(ev.date.slice(5,7))+'月':'無日期'}</div>`;lastM=mo;}
+    h+=renderCard(ev);
   });
-  return`<div class="ev-list">${html}</div>`;
+  return`<div class="evl">${h}</div>`;
 }
 
 // RULES
 function renderRules(){
+  const catKeys=[['cat_work','work'],['cat_meet','meeting'],['cat_ev','event'],['cat_dead','deadline'],['cat_oth','other']];
+  const uiKeys=[['logo','App'],['today','今日'],['week','本週'],['month','月曆'],['all','全部'],['abs','請假'],['rules','規則'],['fabm','新增'],['fabs','學生'],['fabt','老師']];
   return`<div>
-    <div class="rules-intro">⚡ 設定關鍵字規則，下次輸入時自動套用分類、提醒和備注！</div>
-    <div class="rule-form">
-      <div style="font-size:14px;font-weight:800;margin-bottom:14px">✨ 新增規則</div>
+    <div class="ri">⚡ 設定關鍵字規則，下次輸入時自動套用！</div>
+
+    <div style="background:var(--sf);border-radius:var(--r2);padding:16px;margin-bottom:16px;box-shadow:var(--sh2);border:1px solid var(--bd)">
+      <div style="font-size:13px;font-weight:800;margin-bottom:10px">🎨 自訂分類圖示</div>
+      <div class="ic-grid">
+        ${catKeys.map(([k,cat])=>`<button class="ic-btn" onclick="openPicker('${k}')">
+          <span class="ic-em">${CATS[cat].icon}</span>
+          <span>${CATS[cat].label}</span>
+        </button>`).join('')}
+      </div>
+      <div style="font-size:13px;font-weight:800;margin:14px 0 10px">🖼️ 介面圖示</div>
+      <div class="ic-grid">
+        ${uiKeys.map(([k,l])=>`<button class="ic-btn" onclick="openPicker('${k}')">
+          <span class="ic-em">${gi(TARGETS[k].key)}</span>
+          <span>${l}</span>
+        </button>`).join('')}
+      </div>
+      <div style="font-size:11px;color:var(--hi);font-weight:600;margin-top:10px">點擊任何圖示即可替換</div>
+    </div>
+
+    <div class="rform">
+      <div style="font-size:14px;font-weight:800;margin-bottom:14px">＋ 新增規則</div>
       <div class="rf"><label>🔑 關鍵字</label><input id="rf-kw" placeholder="例如：單元考試"/></div>
-      <div class="rf"><label>🏷️ 分類</label><div class="toggle-group" id="rf-cats"></div></div>
-      <div class="rf"><label>🔔 提醒時間</label><div class="toggle-group" id="rf-rems"></div></div>
+      <div class="rf"><label>🏷️ 分類</label><div class="tg" id="rf-cats"></div></div>
+      <div class="rf"><label>🔔 提醒時間</label><div class="tg" id="rf-rems"></div></div>
       <div class="rf"><label>📝 自動備注</label><textarea id="rf-note" placeholder="例如：請提前通知家長…"></textarea></div>
-      <button class="add-rule-btn" onclick="addCustomRule()">✅ 新增規則</button>
+      <button class="arb" onclick="addCR()">✅ 新增規則</button>
     </div>
-    <div class="section-hd"><span class="section-title">✨ 自訂規則（${customRules.length}）</span></div>
-    ${customRules.length?customRules.map(r=>ruleCard(r)).join(''):`<div class="empty" style="padding:16px 0">
-      <svg width="56" height="56" viewBox="0 0 56 56" fill="none" style="display:block;margin:0 auto 8px;animation:float 3s ease-in-out infinite">
-        <circle cx="28" cy="34" r="18" fill="#fde8ef" stroke="#4a3f35" stroke-width="1.8"/>
-        <circle cx="18" cy="17" r="7" fill="#fde8ef" stroke="#4a3f35" stroke-width="1.6"/>
-        <circle cx="38" cy="17" r="7" fill="#fde8ef" stroke="#4a3f35" stroke-width="1.6"/>
-        <ellipse cx="22" cy="32" rx="3.5" ry="3.5" fill="#4a3f35"/>
-        <ellipse cx="34" cy="32" rx="3.5" ry="3.5" fill="#4a3f35"/>
-        <ellipse cx="23" cy="31" rx="1.2" ry="1.2" fill="white"/>
-        <ellipse cx="35" cy="31" rx="1.2" ry="1.2" fill="white"/>
-        <ellipse cx="14" cy="36" rx="4" ry="2.5" fill="#f8c0c8" opacity="0.65"/>
-        <ellipse cx="42" cy="36" rx="4" ry="2.5" fill="#f8c0c8" opacity="0.65"/>
-        <ellipse cx="28" cy="37" rx="2.5" ry="1.5" fill="#f8b8c8"/>
-        <path d="M22 41 Q28 46 34 41" stroke="#4a3f35" stroke-width="1.8" fill="none" stroke-linecap="round"/>
-      </svg>
-      <div class="empty-msg">還沒有自訂規則</div></div>`}
-    <div class="section-hd" style="margin-top:20px"><span class="section-title">🔧 內建規則</span></div>
-    ${BUILTIN_RULES.map(r=>ruleCard(r,true)).join('')}
+    <div class="shd"><span class="stl">✨ 自訂規則（${customRules.length}）</span></div>
+    ${customRules.length?customRules.map(r=>ruleCard(r)).join(''):'<div class="empty" style="padding:16px 0"><span class="ea" style="font-size:32px">⚡</span><div class="em">還沒有自訂規則</div></div>'}
+    <div class="shd" style="margin-top:20px"><span class="stl">🔧 內建規則</span></div>
+    ${BR.map(r=>ruleCard(r,true)).join('')}
   </div>`;
 }
-function ruleCard(r,builtin=false){
+function ruleCard(r,bi=false){
   const c=CATS[r.cat]||CATS.other;
-  return`<div class="rule-card${builtin?' builtin':''}">
-    <div class="rule-body">
-      <div class="rule-kw">${c.icon} ${r.kw}${builtin?'<span class="builtin-tag">內建</span>':''}</div>
-      <div class="rule-meta"><span class="tag" style="background:${c.bg};color:${c.tc}">${c.icon} ${c.label}</span> · 🔔 ${r.rems.map(x=>x===0?'當天':x+'天前').join('、')}</div>
-      ${r.note?`<div class="rule-note-preview">📝 ${r.note.slice(0,42)}${r.note.length>42?'…':''}</div>`:''}
+  return`<div class="rcard${bi?' bi':''}">
+    <div class="rb2">
+      <div class="rkw">${c.icon} ${r.kw}${bi?`<span class="btag">內建</span>`:''}</div>
+      <div class="rmeta"><span class="tag" style="background:${c.bg};color:${c.tc}">${c.icon} ${c.label}</span> · 🔔 ${r.rems.map(x=>x===0?'當天':x+'天前').join('、')}</div>
+      ${r.note?`<div class="rnp">📝 ${r.note.slice(0,42)}${r.note.length>42?'…':''}</div>`:''}
     </div>
-    ${!builtin?`<button class="rule-del" onclick="delRule('${r.id}')">🗑️</button>`:''}
+    ${!bi?`<button class="rdl" onclick="delR('${r.id}')">🗑️</button>`:''}
   </div>`;
 }
-function buildRFCats(){
-  const el=document.getElementById('rf-cats');if(!el)return;
-  el.innerHTML=Object.entries(CATS).map(([k,v])=>`<button class="toggle-btn${rfCat===k?' on':''}" style="${rfCat===k?`background:${v.bg};border-color:${v.color};color:${v.tc}`:''}" onclick="setRFCat('${k}')">${v.icon} ${v.label}</button>`).join('');
-}
-function buildRFRems(){
-  const el=document.getElementById('rf-rems');if(!el)return;
-  el.innerHTML=REM_OPTIONS.map(o=>`<button class="toggle-btn${rfRems.includes(o.d)?' on':''}" onclick="toggleRFRem(${o.d})">${o.l}</button>`).join('');
-}
-function setRFCat(k){rfCat=k;buildRFCats();}
-function toggleRFRem(d){rfRems=rfRems.includes(d)?rfRems.filter(r=>r!==d):[...rfRems,d];buildRFRems();}
-function addCustomRule(){
+function buildRFCats(){const el=document.getElementById('rf-cats');if(!el)return;el.innerHTML=Object.entries(CATS).map(([k,v])=>`<button class="tb2${rfCat===k?' on':''}" style="${rfCat===k?`background:${v.bg};border-color:${v.color};color:${v.tc}`:''}" onclick="setRFC('${k}')">${v.icon} ${v.label}</button>`).join('');}
+function buildRFRems(){const el=document.getElementById('rf-rems');if(!el)return;el.innerHTML=REMO.map(o=>`<button class="tb2${rfRems.includes(o.d)?' on':''}" onclick="togRFR(${o.d})">${o.l}</button>`).join('');}
+function setRFC(k){rfCat=k;buildRFCats();}
+function togRFR(d){rfRems=rfRems.includes(d)?rfRems.filter(r=>r!==d):[...rfRems,d];buildRFRems();}
+function addCR(){
   const kw=(document.getElementById('rf-kw')?.value||'').trim();
   if(!kw){toast('⚠️ 請輸入關鍵字');return;}
   if(!rfRems.length){toast('⚠️ 請選擇提醒時間');return;}
   customRules.push({id:'c'+Date.now(),kw,cat:rfCat,rems:rfRems,note:(document.getElementById('rf-note')?.value||'').trim(),builtin:false});
-  saveRules();rfRems=[1];rfCat='work';toast(`✅ 規則「${kw}」已新增！`);render();
+  saveRu();rfRems=[1];rfCat='work';toast(`✅ 規則「${kw}」已新增！`);render();
 }
-function delRule(id){customRules=customRules.filter(r=>r.id!==id);saveRules();render();}
+function delR(id){customRules=customRules.filter(r=>r.id!==id);saveRu();render();}
 
-// ═══════════════════════════
 // EVENT CARDS
-// ═══════════════════════════
-function renderCards(evs){return`<div class="ev-list">${evs.map(renderCard).join('')}</div>`;}
+function renderCards(evs){return`<div class="evl">${evs.map(renderCard).join('')}</div>`;}
 function renderCard(ev){
   const c=CATS[ev.cat]||CATS.other;
   const rems=(ev.rems||[]).map(r=>r===0?'當天':r+'天前').join('、');
-  return`<div class="ev-card${ev.done?' done':''}" style="border-left-color:${c.color}">
-    <div class="ev-head">
-      <span class="ev-cat-icon">${c.icon}</span>
-      <span class="ev-title">${ev.title}</span>
-      <span class="ev-date-lbl">${fmtDisp(ev.date)}${ev.time?' '+ev.time:''}</span>
-    </div>
+  return`<div class="evc${ev.done?' dn':''}" style="border-left-color:${c.color}">
+    <div class="evh"><span class="evi">${c.icon}</span><span class="evt">${ev.title}</span><span class="evd">${fS(ev.date)}${ev.time?' '+ev.time:''}</span></div>
     <span class="tag" style="background:${c.bg};color:${c.tc}">${c.label}</span>
-    ${ev.note?`<div class="ev-note">${ev.note}</div>`:''}
-    ${rems?`<div class="rem-row"><span class="rem-chip">🔔 ${rems}</span></div>`:''}
-    <div class="ev-actions">
-      <button class="ev-act-btn ok" onclick="toggleDone(${ev.id})">${ev.done?'↩️ 恢復':'✅ 完成'}</button>
-      <button class="ev-act-btn" onclick="openAdd(${ev.id})">✏️ 編輯</button>
-      <button class="ev-act-btn danger" onclick="delEv(${ev.id})">🗑️ 刪除</button>
+    ${ev.note?`<div class="evn">${ev.note}</div>`:''}
+    ${rems?`<div class="rr"><span class="rc">🔔 ${rems}</span></div>`:''}
+    <div class="eva">
+      <button class="eab ok" onclick="togDone(${ev.id})">${ev.done?'↩️ 恢復':'✅ 完成'}</button>
+      <button class="eab" onclick="openAdd(${ev.id})">✏️ 編輯</button>
+      <button class="eab danger" onclick="delEv(${ev.id})">🗑️ 刪除</button>
     </div>
   </div>`;
 }
-function toggleDone(id){events=events.map(e=>e.id===id?{...e,done:!e.done}:e);saveEv();render();}
+function togDone(id){events=events.map(e=>e.id===id?{...e,done:!e.done}:e);saveEv();render();}
 function delEv(id){if(!confirm('確定刪除？'))return;events=events.filter(e=>e.id!==id);saveEv();render();}
 
-// ═══════════════════════════
-// ADD/EDIT EVENT MODAL
-// ═══════════════════════════
-function buildCatPills(){
-  document.getElementById('cat-pills').innerHTML=Object.entries(CATS).map(([k,v])=>`<button class="cat-pill${selCat===k?' active':''}" style="${selCat===k?`background:${v.bg};border-color:${v.color};color:${v.tc}`:''}" onclick="setModalCat('${k}')">${v.icon} ${v.label}</button>`).join('');
-}
-function buildRemPills(){
-  document.getElementById('rem-pills').innerHTML=REM_OPTIONS.map(o=>`<button class="rem-pill-btn${selRems.includes(o.d)?' active':''}" onclick="toggleModalRem(${o.d})">${o.l}</button>`).join('');
-}
-function setModalCat(k){selCat=k;selRems=[...(CATS[k]?.remDef||[1])];buildCatPills();buildRemPills();}
-function toggleModalRem(d){selRems=selRems.includes(d)?selRems.filter(r=>r!==d):[...selRems,d];buildRemPills();}
-
-function openAdd(id=null,prefillDate=null){
+// ADD/EDIT
+function buildCPs(){document.getElementById('cat-pills').innerHTML=Object.entries(CATS).map(([k,v])=>`<button class="cpill${selCat===k?' active':''}" style="${selCat===k?`background:${v.bg};border-color:${v.color};color:${v.tc}`:''}" onclick="setMC('${k}')">${v.icon} ${v.label}</button>`).join('');}
+function buildRPs(){document.getElementById('rem-pills').innerHTML=REMO.map(o=>`<button class="rpb${selRems.includes(o.d)?' on':''}" onclick="togMR(${o.d})">${o.l}</button>`).join('');}
+function setMC(k){selCat=k;selRems=[...(CATS[k]?.remDef||[1])];buildCPs();buildRPs();}
+function togMR(d){selRems=selRems.includes(d)?selRems.filter(r=>r!==d):[...selRems,d];buildRPs();}
+function openAdd(id=null,pre=null){
   editId=id;
-  if(id){
-    const ev=events.find(e=>e.id===id);
-    document.getElementById('f-title').value=ev.title;
-    document.getElementById('f-date').value=ev.date||'';
-    document.getElementById('f-time').value=ev.time||'';
-    document.getElementById('f-note').value=ev.note||'';
-    selCat=ev.cat;selRems=[...(ev.rems||[])];
-    document.getElementById('modal-ttl').textContent='編輯事件';
-    document.getElementById('modal-icon').textContent='✏️';
-  }else{
-    document.getElementById('f-title').value='';
-    document.getElementById('f-date').value=prefillDate||isoToday();
-    document.getElementById('f-time').value='';
-    document.getElementById('f-note').value='';
-    selCat='work';selRems=[1];
-    document.getElementById('modal-ttl').textContent='新增事件';
-    document.getElementById('modal-icon').textContent='🌟';
-  }
-  buildCatPills();buildRemPills();
-  document.getElementById('f-title').oninput=function(){
-    const rule=matchRule(this.value);
-    if(rule){selCat=rule.cat;selRems=rule.rems;if(rule.note&&!document.getElementById('f-note').value)document.getElementById('f-note').value=rule.note;buildCatPills();buildRemPills();}
-  };
+  if(id){const ev=events.find(e=>e.id===id);document.getElementById('f-title').value=ev.title;document.getElementById('f-date').value=ev.date||'';document.getElementById('f-time').value=ev.time||'';document.getElementById('f-note').value=ev.note||'';selCat=ev.cat;selRems=[...(ev.rems||[])];document.getElementById('modal-ttl').textContent='編輯事件';document.getElementById('modal-icon').textContent='✏️';}
+  else{document.getElementById('f-title').value='';document.getElementById('f-date').value=pre||iTd();document.getElementById('f-time').value='';document.getElementById('f-note').value='';selCat='work';selRems=[1];document.getElementById('modal-ttl').textContent='新增事件';document.getElementById('modal-icon').textContent='✨';}
+  buildCPs();buildRPs();
+  document.getElementById('f-title').oninput=function(){const rule=mR(this.value);if(rule){selCat=rule.cat;selRems=rule.rems;if(rule.note&&!document.getElementById('f-note').value)document.getElementById('f-note').value=rule.note;buildCPs();buildRPs();}};
   document.getElementById('add-modal').style.display='flex';
-  setTimeout(()=>document.getElementById('f-title').focus(),120);
+  setTimeout(()=>document.getElementById('f-title').focus(),100);
 }
 function closeAdd(){document.getElementById('add-modal').style.display='none';editId=null;}
 function saveEvent(){
   const title=document.getElementById('f-title').value.trim();
-  if(!title){toast('⚠️ 請填寫事件名稱');return;}
+  if(!title){toast('⚠️ 請填寫標題');return;}
   const ev={id:editId||Date.now(),title,date:document.getElementById('f-date').value||null,time:document.getElementById('f-time').value||null,cat:selCat,rems:selRems,note:document.getElementById('f-note').value.trim(),done:editId?(events.find(e=>e.id===editId)?.done||false):false};
   if(editId)events=events.map(e=>e.id===editId?ev:e);else events.unshift(ev);
   saveEv();closeAdd();render();toast('✅ 已儲存！');
 }
 
-// ═══════════════════════════
 // ABSENCE MODAL
-// ═══════════════════════════
-function openAbsModal(type, editId_=null){
-  editAbsId=editId_;
-  const existing=editId_?absences.find(a=>a.id===editId_):null;
-  const t=existing?existing.type:type;
-  const isS=t==='student';
-
+function openAbsModal(type,eid=null){
+  editAbsId=eid;const ex=eid?absences.find(a=>a.id===eid):null;const t=ex?ex.type:type;const isS=t==='student';
   document.getElementById('abs-modal-inner').innerHTML=`
-    <div class="modal-title">
-      <span>${isS?'🎒 學生請假':'👩‍🏫 老師請假'}</span>
-      <button class="modal-close" onclick="closeAbsModal()">×</button>
+    <div class="mttl"><span>${isS?'📝 學生請假':'🏫 老師請假'}</span><button class="mcls" onclick="closeAbsModal()">×</button></div>
+    <div class="field"><label>${isS?'👤 學生姓名':'👤 老師姓名'}</label>
+      <input id="ab-name" placeholder="${isS?'例：小明、B班全體':'例：Rita 老師'}" value="${ex?.name||''}"/></div>
+    <div class="fr">
+      <div class="field"><label>📅 請假日期</label><input id="ab-date" type="date" value="${ex?.date||iTd()}"/></div>
+      <div class="field"><label>📅 至（選填）</label><input id="ab-date2" type="date" value="${ex?.date2||''}"/></div>
     </div>
-    <div class="field">
-      <label>${isS?'👤 學生姓名':'👩‍🏫 老師姓名'}</label>
-      <input id="ab-name" placeholder="${isS?'例如：小明、B班全體':'例如：Rita 老師'}" value="${existing?.name||''}"/>
-    </div>
-    <div class="field-row">
-      <div class="field"><label>📅 請假日期</label><input id="ab-date" type="date" value="${existing?.date||isoToday()}"/></div>
-      <div class="field"><label>📅 至（選填）</label><input id="ab-date2" type="date" value="${existing?.date2||''}"/></div>
-    </div>
-    <div class="field"><label>📝 請假原因</label><input id="ab-reason" placeholder="例如：生病、家事" value="${existing?.reason||''}"/></div>
-
-    ${isS?`
-    <div class="abs-form-section student-section">
-      <div class="abs-section-title student">📚 補課安排</div>
-      <div class="field" style="margin-bottom:10px">
-        <label>待補進度 / 課程內容</label>
-        <textarea id="ab-makeup" placeholder="例如：Unit 3 Vocab + p.24-26 練習題、上週的聽力作業…">${existing?.makeup||''}</textarea>
-      </div>
-      <div class="field" style="margin-bottom:0">
-        <label>預計補課日期（選填）</label>
-        <input id="ab-makeup-date" type="date" value="${existing?.makeupDate||''}"/>
-      </div>
-    </div>`:`
-    <div class="abs-form-section teacher-section">
-      <div class="abs-section-title teacher">👤 代課安排</div>
-      <div class="field" style="margin-bottom:10px">
-        <label>代課老師</label>
-        <input id="ab-sub" placeholder="例如：Polly 老師、請 Winnie 代" value="${existing?.sub||''}"/>
-      </div>
-      <div class="field" style="margin-bottom:0">
-        <label>代課內容 / 交接事項</label>
-        <textarea id="ab-subplan" placeholder="例如：B班繼續 Unit 5，請按照教案進行，CD在抽屜…">${existing?.subplan||''}</textarea>
-      </div>
-    </div>`}
-
-    <div class="field">
-      <label>📝 其他備注</label>
-      <textarea id="ab-note" placeholder="其他需要記錄的事項…">${existing?.note||''}</textarea>
-    </div>
-    <button class="save-btn ${isS?'purple-btn':'red-btn'}" onclick="saveAbsence('${t}')">💾 儲存請假紀錄</button>
-  `;
+    <div class="field"><label>📝 請假原因</label><input id="ab-reason" placeholder="例：生病、家事" value="${ex?.reason||''}"/></div>
+    ${isS?`<div class="afsec ss"><div class="afstl student">📚 補課安排</div>
+      <div class="field" style="margin-bottom:10px"><label>待補進度</label>
+        <textarea id="ab-makeup" placeholder="例：Unit 3 Vocab + p.24-26 練習題…">${ex?.makeup||''}</textarea></div>
+      <div class="field" style="margin-bottom:0"><label>預計補課日期</label>
+        <input id="ab-makeup-date" type="date" value="${ex?.makeupDate||''}"/></div></div>`
+    :`<div class="afsec ts"><div class="afstl teacher">👤 代課安排</div>
+      <div class="field" style="margin-bottom:10px"><label>代課老師</label>
+        <input id="ab-sub" placeholder="例：Polly 老師" value="${ex?.sub||''}"/></div>
+      <div class="field" style="margin-bottom:0"><label>代課內容 / 交接事項</label>
+        <textarea id="ab-subplan" placeholder="例：B班繼續 Unit 5，CD在抽屜…">${ex?.subplan||''}</textarea></div></div>`}
+    <div class="field"><label>📝 其他備注</label>
+      <textarea id="ab-note" placeholder="其他備注…">${ex?.note||''}</textarea></div>
+    <button class="sbtn ${isS?'sb':'tb'}" onclick="saveAbs2('${t}')">💾 儲存請假紀錄</button>`;
   document.getElementById('abs-modal').style.display='flex';
 }
 function closeAbsModal(){document.getElementById('abs-modal').style.display='none';editAbsId=null;}
-
-function saveAbsence(type){
+function saveAbs2(type){
   const name=(document.getElementById('ab-name')?.value||'').trim();
   const date=document.getElementById('ab-date')?.value;
-  if(!name){toast('⚠️ 請填寫姓名');return;}
-  if(!date){toast('⚠️ 請填寫日期');return;}
+  if(!name){toast('⚠️ 請填寫姓名');return;}if(!date){toast('⚠️ 請填寫日期');return;}
   const isS=type==='student';
-  const rec={
-    id:editAbsId||Date.now(),
-    type,name,date,
-    date2:document.getElementById('ab-date2')?.value||null,
-    reason:document.getElementById('ab-reason')?.value||'',
-    note:document.getElementById('ab-note')?.value||'',
-    ...(isS?{
-      makeup:document.getElementById('ab-makeup')?.value||'',
-      makeupDate:document.getElementById('ab-makeup-date')?.value||null,
-      makeupDone:editAbsId?(absences.find(a=>a.id===editAbsId)?.makeupDone||false):false,
-    }:{
-      sub:document.getElementById('ab-sub')?.value||'',
-      subplan:document.getElementById('ab-subplan')?.value||'',
-      subConfirmed:editAbsId?(absences.find(a=>a.id===editAbsId)?.subConfirmed||false):false,
-    }),
-  };
-  if(editAbsId)absences=absences.map(a=>a.id===editAbsId?rec:a);
-  else absences.unshift(rec);
-  saveAbs();closeAbsModal();render();
-  toast(isS?'🎒 學生請假已記錄！':'👩‍🏫 老師請假已記錄！');
+  const rec={id:editAbsId||Date.now(),type,name,date,date2:document.getElementById('ab-date2')?.value||null,reason:document.getElementById('ab-reason')?.value||'',note:document.getElementById('ab-note')?.value||'',
+    ...(isS?{makeup:document.getElementById('ab-makeup')?.value||'',makeupDate:document.getElementById('ab-makeup-date')?.value||null,makeupDone:editAbsId?(absences.find(a=>a.id===editAbsId)?.makeupDone||false):false}
+    :{sub:document.getElementById('ab-sub')?.value||'',subplan:document.getElementById('ab-subplan')?.value||'',subConfirmed:editAbsId?(absences.find(a=>a.id===editAbsId)?.subConfirmed||false):false})};
+  if(editAbsId)absences=absences.map(a=>a.id===editAbsId?rec:a);else absences.unshift(rec);
+  saveAbs();closeAbsModal();render();toast(isS?'📝 學生請假已記錄！':'🏫 老師請假已記錄！');
 }
 
-// ═══════════════════════════
-// UPLOAD / AI
-// ═══════════════════════════
-function openUpload(){document.getElementById('upload-modal').style.display='flex';resetUploadBody();}
+// UPLOAD/AI
+function openUpload(){document.getElementById('upload-modal').style.display='flex';resetUB();}
 function closeUpload(){document.getElementById('upload-modal').style.display='none';}
-function resetUploadBody(){
-  document.getElementById('upload-body').innerHTML=`
-    <div class="upload-zone"><input type="file" id="file-input" accept="image/*,.pdf,.txt,.csv,.xlsx,.docx" onchange="handleFile(this.files[0])"/>
-    <span style="font-size:36px;display:block;margin-bottom:8px">📎</span>
-    <div class="upload-hint">拖曳或點擊上傳<br><span style="font-size:11px;color:var(--hint)">圖片 / PDF / Excel / Word / 純文字</span></div></div>`;
-}
-function saveKey(){
-  const k=document.getElementById('api-key').value.trim();if(!k)return;
-  localStorage.setItem('wc4_apikey',k);document.getElementById('api-key').value='';
-  document.getElementById('key-status').textContent='✅ 已儲存';document.getElementById('api-key').placeholder='API Key 已儲存';
-}
-(function(){const k=localStorage.getItem('wc4_apikey');if(k){document.getElementById('key-status').textContent='✅';document.getElementById('api-key').placeholder='API Key 已儲存';}})();
-
-const EXTRACT_PROMPT=`你是行事曆事件擷取助手。找出所有有日期的事件。分類：meeting=親師座談/PTA/說明會，deadline=截止/考試/評量，event=活動/比賽，work=會議，other=其他。提醒：meeting=[7,1]，deadline=[7,3,1]，event=[3,1]，work=[1]，other=[0]。今年${today.getFullYear()}年。只回傳JSON：{"events":[{"title":"","date":"YYYY-MM-DD","time":"HH:MM或null","category":"","note":"","rems":[]}]}`;
-
+function resetUB(){document.getElementById('upload-body').innerHTML=`<div class="uz"><input type="file" id="file-input" accept="image/*,.pdf,.txt,.csv,.xlsx,.docx" onchange="handleFile(this.files[0])"/><div style="font-size:36px;margin-bottom:8px">📎</div><div class="uhi">拖曳或點擊上傳<br><span style="font-size:11px;color:var(--hi)">圖片/PDF/Excel/Word/純文字</span></div></div>`;}
+function saveKey(){const k=document.getElementById('api-key').value.trim();if(!k)return;localStorage.setItem('wc6_ak',k);document.getElementById('api-key').value='';document.getElementById('key-status').textContent='✅';document.getElementById('api-key').placeholder='API Key 已儲存';}
+(function(){const k=localStorage.getItem('wc6_ak');if(k){document.getElementById('key-status').textContent='✅';document.getElementById('api-key').placeholder='API Key 已儲存';}})();
+const EP=`你是行事曆事件擷取助手。找出所有有日期的事件。分類：meeting=親師座談/PTA/說明會，deadline=截止/考試/評量，event=活動/比賽，work=會議，other=其他。提醒：meeting=[7,1]，deadline=[7,3,1]，event=[3,1]，work=[1]，other=[0]。今年${today.getFullYear()}年。只回傳JSON：{"events":[{"title":"","date":"YYYY-MM-DD","time":"HH:MM或null","category":"","note":"","rems":[]}]}`;
 async function handleFile(file){
-  const key=localStorage.getItem('wc4_apikey');
-  if(!key){toast('⚠️ 請先輸入 API Key');return;}
-  document.getElementById('upload-body').innerHTML=`<div style="text-align:center;padding:28px"><div class="spinner"></div><p style="font-size:13px;color:var(--muted);font-weight:600">🤖 分析中…</p></div>`;
+  const key=localStorage.getItem('wc6_ak');if(!key){toast('⚠️ 請先輸入 API Key');return;}
+  document.getElementById('upload-body').innerHTML=`<div style="text-align:center;padding:28px"><div class="spin"></div><p style="font-size:13px;color:var(--mu);font-weight:600">🤖 分析中…</p></div>`;
   try{
     let messages;
-    if(file.type.startsWith('image/')||file.type==='application/pdf'){
-      const b64=await new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result.split(',')[1]);r.onerror=rej;r.readAsDataURL(file);});
-      messages=[{role:'user',content:[{type:file.type.startsWith('image/')?'image':'document',source:{type:'base64',media_type:file.type,data:b64}},{type:'text',text:EXTRACT_PROMPT}]}];
-    }else{messages=[{role:'user',content:`${EXTRACT_PROMPT}\n\n${(await file.text()).slice(0,8000)}`}];}
+    if(file.type.startsWith('image/')||file.type==='application/pdf'){const b64=await new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result.split(',')[1]);r.onerror=rej;r.readAsDataURL(file);});messages=[{role:'user',content:[{type:file.type.startsWith('image/')?'image':'document',source:{type:'base64',media_type:file.type,data:b64}},{type:'text',text:EP}]}];}
+    else{messages=[{role:'user',content:`${EP}\n\n${(await file.text()).slice(0,8000)}`}];}
     const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-opus-4-5',max_tokens:2000,messages})});
-    const data=await res.json();
-    if(data.error)throw new Error(data.error.message);
+    const data=await res.json();if(data.error)throw new Error(data.error.message);
     const parsed=JSON.parse(data.content.map(c=>c.text||'').join('').replace(/```json|```/g,'').trim());
-    showAIResults(parsed.events||[]);
-  }catch(e){
-    document.getElementById('upload-body').innerHTML=`<p style="color:var(--red);font-size:13px;text-align:center;padding:12px;font-weight:700">❌ ${e.message}</p>`;
-    setTimeout(resetUploadBody,2500);
-  }
+    showAIR(parsed.events||[]);
+  }catch(e){document.getElementById('upload-body').innerHTML=`<p style="color:var(--rd);font-size:13px;text-align:center;padding:12px;font-weight:700">❌ ${e.message}</p>`;setTimeout(resetUB,2500);}
 }
-
-window._aiEvs=[];
-function showAIResults(evs){
-  if(!evs.length){document.getElementById('upload-body').innerHTML=`<div class="empty"><span class="empty-art">🔍</span><div class="empty-msg">沒有找到事件</div></div>`;setTimeout(resetUploadBody,2000);return;}
-  window._aiEvs=evs;
-  evs.forEach(ev=>{const rule=matchRule(ev.title);if(rule){ev.category=rule.cat;ev.rems=rule.rems;if(rule.note&&!ev.note)ev.note=rule.note;}});
-  let html=`<div class="smart-banner">⚡ 找到 ${evs.length} 個事件，已套用規則！</div>`;
-  html+=evs.map((ev,i)=>{const c=CATS[ev.category]||CATS.other;return`<div class="ai-ev-item"><input type="checkbox" class="ai-ev-check" id="aiev${i}" checked/><div><div style="font-size:13px;font-weight:700">${c.icon} ${ev.title}</div><div style="font-size:11px;color:var(--muted);font-weight:600;margin-top:2px">${ev.date||''}${ev.time&&ev.time!='null'?' '+ev.time:''} · <span style="color:${c.color}">${c.label}</span>${ev.rems?' · 🔔 '+ev.rems.map(r=>r===0?'當天':r+'天前').join('、'):''}</div>${ev.note?`<div style="font-size:11px;color:var(--muted);font-style:italic">📝 ${ev.note}</div>`:''}</div></div>`;}).join('');
-  html+=`<button class="save-btn" style="margin-top:14px" onclick="importAI()">✨ 匯入勾選的事件</button>`;
-  document.getElementById('upload-body').innerHTML=html;
+window._ae=[];
+function showAIR(evs){
+  if(!evs.length){document.getElementById('upload-body').innerHTML=`<div class="empty"><span class="ea">🔍</span><div class="em">沒有找到事件</div></div>`;setTimeout(resetUB,2000);return;}
+  window._ae=evs;
+  evs.forEach(ev=>{const r=mR(ev.title);if(r){ev.category=r.cat;ev.rems=r.rems;if(r.note&&!ev.note)ev.note=r.note;}});
+  let h=`<div class="smb">⚡ 找到 ${evs.length} 個事件，已套用規則！</div>`;
+  h+=evs.map((ev,i)=>{const c=CATS[ev.category]||CATS.other;return`<div class="ait"><input type="checkbox" class="aic" id="aiev${i}" checked/><div><div style="font-size:13px;font-weight:700">${c.icon} ${ev.title}</div><div style="font-size:11px;color:var(--mu);font-weight:600;margin-top:2px">${ev.date||''}${ev.time&&ev.time!='null'?' '+ev.time:''} · <span style="color:${c.color}">${c.label}</span>${ev.rems?' · 🔔 '+ev.rems.map(r=>r===0?'當天':r+'天前').join('、'):''}</div>${ev.note?`<div style="font-size:11px;color:var(--mu);font-style:italic">📝 ${ev.note}</div>`:''}</div></div>`;}).join('');
+  h+=`<button class="sbtn" style="margin-top:14px" onclick="importAI()">✨ 匯入勾選的事件</button>`;
+  document.getElementById('upload-body').innerHTML=h;
 }
 function importAI(){
-  (window._aiEvs||[]).forEach((ev,i)=>{
-    const cb=document.getElementById('aiev'+i);if(!cb||!cb.checked)return;
-    events.unshift({id:Date.now()+i,title:ev.title,date:ev.date||null,time:(ev.time&&ev.time!=='null')?ev.time:null,cat:ev.category||'other',rems:ev.rems||[0],note:ev.note||'',done:false});
-  });
+  (window._ae||[]).forEach((ev,i)=>{const cb=document.getElementById('aiev'+i);if(!cb||!cb.checked)return;events.unshift({id:Date.now()+i,title:ev.title,date:ev.date||null,time:(ev.time&&ev.time!=='null')?ev.time:null,cat:ev.category||'other',rems:ev.rems||[0],note:ev.note||'',done:false});});
   saveEv();closeUpload();render();toast('✅ 事件已匯入！');
 }
 
 // NOTIFICATIONS
-function checkNotifications(){
-  if(!('Notification'in window))return;
-  if(Notification.permission==='default')Notification.requestPermission();
-  if(Notification.permission!=='granted')return;
-  events.forEach(ev=>{
-    if(!ev.date||ev.done)return;
-    const diff=Math.round((new Date(ev.date+'T00:00:00')-today)/864e5);
-    if((ev.rems||[]).includes(diff)){
-      const key=`notif_${ev.id}_${diff}`;
-      if(!sessionStorage.getItem(key)){
-        new Notification('🌸 WorkCal',{body:diff===0?`今天：${ev.title}`:diff===1?`明天：${ev.title}`:`${diff}天後：${ev.title}`});
-        sessionStorage.setItem(key,'1');
-      }
-    }
-  });
-  // absence reminders
-  absences.forEach(a=>{
-    if(a.type==='student'&&!a.makeupDone&&a.makeup){
-      const key=`abs_notif_${a.id}`;
-      if(!sessionStorage.getItem(key)){
-        new Notification('🎒 WorkCal 補課提醒',{body:`${a.name} 的補課待安排：${a.makeup.slice(0,40)}`});
-        sessionStorage.setItem(key,'1');
-      }
-    }
-  });
+function checkNotifs(){
+  if(!('Notification'in window))return;if(Notification.permission==='default')Notification.requestPermission();if(Notification.permission!=='granted')return;
+  events.forEach(ev=>{if(!ev.date||ev.done)return;const diff=Math.round((new Date(ev.date+'T00:00:00')-today)/864e5);if((ev.rems||[]).includes(diff)){const key=`n6_${ev.id}_${diff}`;if(!sessionStorage.getItem(key)){new Notification('WithMe 提醒',{body:diff===0?`今天：${ev.title}`:diff===1?`明天：${ev.title}`:`${diff}天後：${ev.title}`});sessionStorage.setItem(key,'1');}}});
+  absences.forEach(a=>{if(a.type==='student'&&!a.makeupDone&&a.makeup){const key=`n6ab_${a.id}`;if(!sessionStorage.getItem(key)){new Notification('📝 補課提醒',{body:`${a.name}：${a.makeup.slice(0,40)}`});sessionStorage.setItem(key,'1');}}});
 }
 
 // INIT
+loadIcons();
 render();
 </script>
 </body>
