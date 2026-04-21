@@ -1175,6 +1175,21 @@ function sv(k,v){
 // START
 syncFromSheet().then(()=>render());
 setInterval(()=>syncFromSheet().then(()=>render()), 3000);
+
+  function afterSaveEvent(){
+  if (document.getElementById('ev-to-todo')?.checked) {
+
+    const title = document.getElementById('f-t')?.value;
+    const date = document.getElementById('f-d')?.value;
+    const note = document.getElementById('f-n')?.value;
+
+    document.getElementById('td-t').value = title;
+    document.getElementById('td-d').value = date;
+    document.getElementById('td-n').value = note || '';
+
+    saveTodo();
+  }
+}
   
 </script>
 </body>
