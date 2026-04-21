@@ -701,7 +701,10 @@ function rLeave(){
         </div>
         ${lv.note?`<div class="ev-note">📝 ${lv.note}</div>`:''}
         ${lv.progress?`<div class="ev-note" style="margin-top:4px;background:rgba(129,199,132,.1);border-left:3px solid #81c784">📚 補課進度：${lv.progress}</div>`:''}
-        <div class="ev-acts"><button class="ev-act" onclick="delLeave(${lv.id})">🗑️ 刪除</button></div>
+        <div class="ev-acts">
+          <button class="ev-act" onclick="editLeave(${lv.id})">✏️ 編輯</button>
+          <button class="ev-act" onclick="delLeave(${lv.id})">🗑️ 刪除</button>
+        </div>
       </div>`;
     });
   }
@@ -719,7 +722,10 @@ function rLeave(){
         </div>
         ${lv.sub?`<div style="font-size:12px;font-weight:700;color:#4a3070;padding:5px 9px;background:rgba(179,157,219,.1);border-radius:7px;margin-bottom:4px">🔄 代課老師：${lv.sub}</div>`:''}
         ${lv.note?`<div class="ev-note">📝 ${lv.note}</div>`:''}
-        <div class="ev-acts"><button class="ev-act" onclick="delLeave(${lv.id})">🗑️ 刪除</button></div>
+        <div class="ev-acts">
+          <button class="ev-act" onclick="editLeave(${lv.id})">✏️ 編輯</button>
+          <button class="ev-act" onclick="delLeave(${lv.id})">🗑️ 刪除</button>
+        </div>
       </div>`;
     });
   }
@@ -881,6 +887,34 @@ function saveLeave(type){
   sv('lv',leaves);closeLeave();if(curTab==='leave')render();
 }
 function delLeave(id){if(!confirm('確定刪除？'))return;leaves=leaves.filter(l=>l.id!==id);sv('lv',leaves);render();}
+function editLeave(id){
+  const lv=leaves.find(l=>l.id===id);if(!lv)return;
+  const type=lv.lvType==='teacher'?'teacher':'student';
+  openLeave();
+  setTimeout(()=>{
+    switchLvTab(type);
+    if(type==='student'){
+      document.getElementById('lv-n').value=lv.name||'';
+      document.getElementById('lv-d').value=lv.date||'';
+      document.getElementById('lv-ty').value=lv.type||'病假';
+      document.getElementById('lv-nt').value=lv.note||'';
+      document.getElementById('lv-prog').value=lv.progress||'';
+    }else{
+      document.getElementById('lv-tc-n').value=lv.name||'';
+      document.getElementById('lv-tc-d').value=lv.date||'';
+      document.getElementById('lv-tc-ty').value=lv.type||'病假';
+      document.getElementById('lv-sub').value=lv.sub||'';
+      document.getElementById('lv-tc-nt').value=lv.note||'';
+    }
+    // Override save to update instead of add
+    const origSave=window.saveLeave;
+    window.saveLeave=function(t){
+      leaves=leaves.filter(l=>l.id!==id);
+      window.saveLeave=origSave;
+      origSave(t);
+    };
+  },100);
+}
 
 // TODO
 function openTodo(){document.getElementById('m-todo').style.display='flex';setTimeout(()=>document.getElementById('td-t').focus(),180);}
