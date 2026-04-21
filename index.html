@@ -332,14 +332,34 @@ input[type=date],input[type=time]{-webkit-appearance:auto}
 <!-- LEAVE MODAL -->
 <div class="mbg" id="m-leave" style="display:none" onclick="if(event.target===this)closeLeave()">
 <div class="modal">
-  <div class="m-title"><span>🏥 新增請假</span><button class="m-close" onclick="closeLeave()">×</button></div>
-  <div class="m-field"><label>👤 學生姓名</label><input id="lv-n" placeholder="姓名"></div>
-  <div class="m-row">
-    <div class="m-field"><label>📅 日期</label><input id="lv-d" type="date"></div>
-    <div class="m-field"><label>類型</label><select id="lv-ty"><option>病假</option><option>事假</option><option>公假</option><option>其他</option></select></div>
+  <div class="m-title"><span id="lv-modal-title">🏥 新增請假</span><button class="m-close" onclick="closeLeave()">×</button></div>
+  <!-- Tab switcher -->
+  <div style="display:flex;gap:4px;padding:3px;background:var(--s2);border-radius:12px;margin-bottom:14px">
+    <button id="lv-tab-st" onclick="switchLvTab('student')" style="flex:1;padding:7px;border:none;border-radius:10px;font-size:12px;font-weight:800;font-family:inherit;background:var(--sf);color:var(--tx);box-shadow:0 1px 4px rgba(0,0,0,.08)">👤 學生請假</button>
+    <button id="lv-tab-tc" onclick="switchLvTab('teacher')" style="flex:1;padding:7px;border:none;border-radius:10px;font-size:12px;font-weight:800;font-family:inherit;background:transparent;color:var(--mu)">🍎 老師請假</button>
   </div>
-  <div class="m-field"><label>📝 原因</label><textarea id="lv-nt" placeholder="請假原因…"></textarea></div>
-  <button class="m-save" onclick="saveLeave()">💾 儲存</button>
+  <!-- Student form -->
+  <div id="lv-form-student">
+    <div class="m-field"><label>👤 學生姓名</label><input id="lv-n" placeholder="姓名"></div>
+    <div class="m-row">
+      <div class="m-field"><label>📅 日期</label><input id="lv-d" type="date"></div>
+      <div class="m-field"><label>類型</label><select id="lv-ty"><option>病假</option><option>事假</option><option>公假</option><option>其他</option></select></div>
+    </div>
+    <div class="m-field"><label>📝 請假原因</label><textarea id="lv-nt" placeholder="請假原因…" style="height:52px"></textarea></div>
+    <div class="m-field"><label>📚 補課進度</label><textarea id="lv-prog" placeholder="例如：第3課單字、作業P.24…" style="height:52px"></textarea></div>
+    <button class="m-save" onclick="saveLeave('student')">💾 儲存學生請假</button>
+  </div>
+  <!-- Teacher form -->
+  <div id="lv-form-teacher" style="display:none">
+    <div class="m-field"><label>🍎 請假老師</label><input id="lv-tc-n" placeholder="老師姓名"></div>
+    <div class="m-row">
+      <div class="m-field"><label>📅 日期</label><input id="lv-tc-d" type="date"></div>
+      <div class="m-field"><label>類型</label><select id="lv-tc-ty"><option>病假</option><option>事假</option><option>公假</option><option>其他</option></select></div>
+    </div>
+    <div class="m-field"><label>🔄 代課老師</label><input id="lv-sub" placeholder="代課老師姓名"></div>
+    <div class="m-field"><label>📝 備注</label><textarea id="lv-tc-nt" placeholder="備注、代課內容…" style="height:52px"></textarea></div>
+    <button class="m-save" onclick="saveLeave('teacher')">💾 儲存老師請假</button>
+  </div>
 </div>
 </div>
 
@@ -633,11 +653,75 @@ function rAll(){
 }
 
 function rLeave(){
+  const now=new Date();
+  const curY=now.getFullYear(),curM=now.getMonth();
+  const mo=`${curY}-${p2(curM+1)}`;
+  const sorted=[...leaves].sort((a,b)=>(b.date||'').localeCompare(a.date||''));
+  const students=sorted.filter(l=>l.lvType==='student'||!l.lvType);
+  const teachers=sorted.filter(l=>l.lvType==='teacher');
+  const stMo=students.filter(l=>l.date&&l.date.startsWith(mo));
+  const tcMo=teachers.filter(l=>l.date&&l.date.startsWith(mo));
+
   let h=`<div class="sec-hd"><span class="sec-title">🏥 請假紀錄</span><button class="sec-add" onclick="openLeave()">＋ 新增</button></div>`;
-  if(!leaves.length)return h+`<div class="empty"><span class="empty-ic">🏥</span><div class="empty-tx">沒有請假紀錄</div></div>`;
-  [...leaves].sort((a,b)=>(b.date||'').localeCompare(a.date||'')).forEach(lv=>{
-    h+=`<div class="lv-card"><div style="display:flex;align-items:center;gap:8px;margin-bottom:${lv.note?4:0}px"><span style="font-size:17px">🏥</span><span style="font-size:14px;font-weight:700;flex:1">${lv.name}</span><span class="tag" style="background:rgba(229,115,115,.14);color:#802020">${lv.type}</span><span style="font-size:11px;color:var(--mu)">${fd(lv.date)}</span></div>${lv.note?`<div class="ev-note">${lv.note}</div>`:''}<div class="ev-acts"><button class="ev-act" onclick="delLeave(${lv.id})">🗑️ 刪除</button></div></div>`;
-  });
+
+  // Monthly summary
+  h+=`<div style="background:var(--sf);border-radius:var(--r);padding:13px 15px;margin-bottom:12px;box-shadow:var(--sh);border:1px solid var(--bd)">
+    <div style="font-size:12px;font-weight:800;color:var(--mu);margin-bottom:10px">📊 ${curY}年${curM+1}月 總表</div>
+    <div style="display:flex;gap:8px;margin-bottom:8px">
+      <div style="flex:1;background:rgba(229,115,115,.08);border-radius:10px;padding:10px;text-align:center;border:1px solid rgba(229,115,115,.15)">
+        <div style="font-size:22px;font-weight:800;color:#c0392b">${stMo.length}</div>
+        <div style="font-size:10px;color:var(--mu);font-weight:700">學生請假</div>
+      </div>
+      <div style="flex:1;background:rgba(179,157,219,.08);border-radius:10px;padding:10px;text-align:center;border:1px solid rgba(179,157,219,.15)">
+        <div style="font-size:22px;font-weight:800;color:#6a3fa0">${tcMo.length}</div>
+        <div style="font-size:10px;color:var(--mu);font-weight:700">老師請假</div>
+      </div>
+      <div style="flex:1;background:rgba(241,204,116,.08);border-radius:10px;padding:10px;text-align:center;border:1px solid rgba(241,204,116,.25)">
+        <div style="font-size:22px;font-weight:800;color:var(--ac2)">${stMo.length+tcMo.length}</div>
+        <div style="font-size:10px;color:var(--mu);font-weight:700">總計</div>
+      </div>
+    </div>
+    ${stMo.length?`<div style="font-size:11px;color:var(--mu);font-weight:600">👤 ${stMo.map(l=>l.name).join('、')}</div>`:''}
+    ${tcMo.length?`<div style="font-size:11px;color:var(--mu);font-weight:600;margin-top:4px">🍎 ${tcMo.map(l=>l.name+(l.sub?' → '+l.sub:'')).join('、')}</div>`:''}
+  </div>`;
+
+  // Student list
+  if(students.length){
+    h+=`<div class="sec-hd"><span class="sec-title">👤 學生請假（${students.length}）</span></div>`;
+    students.forEach(lv=>{
+      h+=`<div class="lv-card">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:${lv.note||lv.progress?5:0}px">
+          <span style="font-size:16px">👤</span>
+          <span style="font-size:14px;font-weight:700;flex:1">${lv.name}</span>
+          <span class="tag" style="background:rgba(229,115,115,.12);color:#802020">${lv.type||''}</span>
+          <span style="font-size:11px;color:var(--mu)">${fd(lv.date)}</span>
+        </div>
+        ${lv.note?`<div class="ev-note">📝 ${lv.note}</div>`:''}
+        ${lv.progress?`<div class="ev-note" style="margin-top:4px;background:rgba(129,199,132,.1);border-left:3px solid #81c784">📚 補課進度：${lv.progress}</div>`:''}
+        <div class="ev-acts"><button class="ev-act" onclick="delLeave(${lv.id})">🗑️ 刪除</button></div>
+      </div>`;
+    });
+  }
+
+  // Teacher list
+  if(teachers.length){
+    h+=`<div class="sec-hd" style="margin-top:10px"><span class="sec-title">🍎 老師請假（${teachers.length}）</span></div>`;
+    teachers.forEach(lv=>{
+      h+=`<div class="lv-card" style="border-left-color:#b39ddb">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px">
+          <span style="font-size:16px">🍎</span>
+          <span style="font-size:14px;font-weight:700;flex:1">${lv.name}</span>
+          <span class="tag" style="background:rgba(179,157,219,.15);color:#6a3fa0">${lv.type||''}</span>
+          <span style="font-size:11px;color:var(--mu)">${fd(lv.date)}</span>
+        </div>
+        ${lv.sub?`<div style="font-size:12px;font-weight:700;color:#4a3070;padding:5px 9px;background:rgba(179,157,219,.1);border-radius:7px;margin-bottom:4px">🔄 代課老師：${lv.sub}</div>`:''}
+        ${lv.note?`<div class="ev-note">📝 ${lv.note}</div>`:''}
+        <div class="ev-acts"><button class="ev-act" onclick="delLeave(${lv.id})">🗑️ 刪除</button></div>
+      </div>`;
+    });
+  }
+
+  if(!leaves.length) h+=`<div class="empty"><span class="empty-ic">🏥</span><div class="empty-tx">沒有請假紀錄</div></div>`;
   return h;
 }
 
@@ -757,12 +841,41 @@ function saveEvent(){
 }
 
 // LEAVE
-function openLeave(){document.getElementById('lv-d').value=ito();document.getElementById('m-leave').style.display='flex';}
+let lvTab='student';
+function switchLvTab(t){
+  lvTab=t;
+  document.getElementById('lv-form-student').style.display=t==='student'?'':'none';
+  document.getElementById('lv-form-teacher').style.display=t==='teacher'?'':'none';
+  const btnSt=document.getElementById('lv-tab-st');
+  const btnTc=document.getElementById('lv-tab-tc');
+  const onStyle='flex:1;padding:7px;border:none;border-radius:10px;font-size:12px;font-weight:800;font-family:inherit;background:var(--sf);color:var(--tx);box-shadow:0 1px 4px rgba(0,0,0,.08)';
+  const offStyle='flex:1;padding:7px;border:none;border-radius:10px;font-size:12px;font-weight:800;font-family:inherit;background:transparent;color:var(--mu)';
+  btnSt.style.cssText=t==='student'?onStyle:offStyle;
+  btnTc.style.cssText=t==='teacher'?onStyle:offStyle;
+}
+function openLeave(){
+  const td=ito();
+  document.getElementById('lv-d').value=td;
+  document.getElementById('lv-tc-d').value=td;
+  document.getElementById('m-leave').style.display='flex';
+  switchLvTab('student');
+}
 function closeLeave(){document.getElementById('m-leave').style.display='none';}
-function saveLeave(){
-  const name=document.getElementById('lv-n').value.trim();if(!name){toast('⚠️ 請填寫姓名');return;}
-  leaves.push({id:Date.now(),name,date:document.getElementById('lv-d').value,type:document.getElementById('lv-ty').value,note:document.getElementById('lv-nt').value.trim()});
-  sv('lv',leaves);closeLeave();if(curTab==='leave')render();toast('✅ 請假已記錄！');
+function saveLeave(type){
+  if(type==='student'){
+    const name=document.getElementById('lv-n').value.trim();
+    if(!name){toast('⚠️ 請填寫學生姓名');return;}
+    leaves.push({id:Date.now(),lvType:'student',name,date:document.getElementById('lv-d').value,type:document.getElementById('lv-ty').value,note:document.getElementById('lv-nt').value.trim(),progress:document.getElementById('lv-prog').value.trim()});
+    ['lv-n','lv-nt','lv-prog'].forEach(id=>{document.getElementById(id).value='';});
+    toast('✅ 學生請假已記錄！');
+  }else{
+    const name=document.getElementById('lv-tc-n').value.trim();
+    if(!name){toast('⚠️ 請填寫老師姓名');return;}
+    leaves.push({id:Date.now(),lvType:'teacher',name,date:document.getElementById('lv-tc-d').value,type:document.getElementById('lv-tc-ty').value,sub:document.getElementById('lv-sub').value.trim(),note:document.getElementById('lv-tc-nt').value.trim()});
+    ['lv-tc-n','lv-sub','lv-tc-nt'].forEach(id=>{document.getElementById(id).value='';});
+    toast('✅ 老師請假已記錄！');
+  }
+  sv('lv',leaves);closeLeave();if(curTab==='leave')render();
 }
 function delLeave(id){if(!confirm('確定刪除？'))return;leaves=leaves.filter(l=>l.id!==id);sv('lv',leaves);render();}
 
