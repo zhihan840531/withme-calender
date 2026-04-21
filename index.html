@@ -409,12 +409,15 @@ input[type=date],input[type=time]{-webkit-appearance:auto}
 <!-- UPLOAD MODAL -->
 <div class="mbg" id="m-up" style="display:none" onclick="if(event.target===this)closeUpload()">
 <div class="modal">
-  <div class="m-title"><span>🤖 AI 讀取檔案</span><button class="m-close" onclick="closeUpload()">×</button></div>
-  <div class="api-row">
-    <input type="password" class="api-in" id="api-k" placeholder="Google AI Studio Key (AIza...)">
-    <button onclick="saveKey()" style="padding:7px 13px;border:1.5px solid var(--bd);border-radius:999px;background:var(--s2);color:var(--mu);font-size:12px;font-weight:800">儲存</button>
-    <span class="api-ok" id="api-ok"></span>
+  <div class="m-title"><span>📋 貼上文字自動匯入</span><button class="m-close" onclick="closeUpload()">×</button></div>
+  <p style="font-size:12px;color:var(--mu);font-weight:600;margin-bottom:10px;line-height:1.6">
+    從 LINE、Excel、任何地方複製文字貼進來，<br>系統自動找出日期和事件！
+  </p>
+  <div class="m-field">
+    <label>📝 貼上文字</label>
+    <textarea id="paste-txt" style="height:140px;line-height:1.6;font-size:13px" placeholder="例如：&#10;5/20 親師座談&#10;5月28日 期末考&#10;6/3 英語競賽&#10;下週四 開會"></textarea>
   </div>
+  <button class="m-save" onclick="parsePaste()" style="margin-bottom:10px">🔍 自動分析</button>
   <div id="up-body"></div>
 </div>
 </div>
@@ -927,47 +930,82 @@ function closeIconPicker(){document.getElementById('m-icon').style.display='none
 function setLogo(ic){logoIcon=ic;sl('wm4_lg',ic);const img=document.querySelector('.logo img');if(img){img.src='';img.style.display='none';const span=document.createElement('span');span.style.cssText='font-size:28px;cursor:pointer';span.textContent=ic;span.onclick=openIconPicker;img.parentNode.replaceChild(span,img);}closeIconPicker();}
 
 // UPLOAD
-function openUpload(){document.getElementById('m-up').style.display='flex';resetUp();}
-function closeUpload(){document.getElementById('m-up').style.display='none';}
-function resetUp(){document.getElementById('up-body').innerHTML=`<div class="up-zone"><input type="file" accept="image/*,.pdf,.txt,.csv,.xlsx,.docx" onchange="handleFile(this.files[0])"><span style="font-size:32px;display:block;margin-bottom:8px">📎</span><div style="font-size:13px;color:var(--mu);font-weight:600">拖曳或點擊上傳<br><span style="font-size:11px;color:var(--hi)">圖片 / PDF / Excel / Word / 純文字</span></div></div>`;}
-function saveKey(){const k=document.getElementById('api-k').value.trim();if(!k)return;localStorage.setItem('wm4_ak',k);document.getElementById('api-k').value='';document.getElementById('api-k').placeholder='API Key 已儲存';document.getElementById('api-ok').textContent='✅';}
-(function(){const k=localStorage.getItem('wm4_ak');if(k){document.getElementById('api-ok').textContent='✅';document.getElementById('api-k').placeholder='API Key 已儲存';}})();
-
-const EP=`找出所有有日期的事件。分類：meeting=親師座談/PTA/說明會，deadline=截止/考試/評量，event=活動/比賽，work=會議，other=其他。提醒：meeting=[7,1]，deadline=[7,3,1]，event=[3,1]，work=[1]，other=[0]。今年${today.getFullYear()}年。只回傳JSON：{"events":[{"title":"","date":"YYYY-MM-DD","time":null,"category":"","note":"","rems":[]}]}`;
-
-async function handleFile(file){
-  const key=localStorage.getItem('wm4_ak');if(!key){toast('⚠️ 請先輸入 API Key');return;}
-  document.getElementById('up-body').innerHTML=`<div style="text-align:center;padding:26px"><div class="spin"></div><p style="font-size:13px;color:var(--mu);font-weight:600">🤖 分析中…</p></div>`;
-  try{
-    // Use @google/generative-ai via cdn
-    let parts=[];
-    if(file.type.startsWith('image/')){
-      const b64=await new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result.split(',')[1]);r.onerror=rej;r.readAsDataURL(file);});
-      parts=[{inlineData:{mimeType:file.type,data:b64}},{text:EP}];
-    }else{
-      const txt=await file.text();
-      parts=[{text:EP+'\n\n'+txt.slice(0,8000)}];
-    }
-    // Gemini with x-goog-api-key header (supports CORS)
-    const res=await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent',{
-      method:'POST',
-      headers:{
-        'Content-Type':'application/json',
-        'x-goog-api-key': key
-      },
-      body:JSON.stringify({contents:[{parts}]})
-    });
-    const data=await res.json();
-    if(data.error)throw new Error(data.error.message||JSON.stringify(data.error));
-    const raw=data.candidates?.[0]?.content?.parts?.[0]?.text||'';
-    const clean=raw.replace(/```json|```/g,'').trim();
-    const parsed=JSON.parse(clean);
-    showAI(parsed.events||[]);
-  }catch(e){
-    document.getElementById('up-body').innerHTML=`<p style="color:#e57373;text-align:center;padding:14px;font-weight:700">❌ ${e.message}</p>`;
-    setTimeout(resetUp,2500);
-  }
+function openUpload(){
+  document.getElementById('m-up').style.display='flex';
+  document.getElementById('paste-txt').value='';
+  document.getElementById('up-body').innerHTML='';
 }
+function closeUpload(){document.getElementById('m-up').style.display='none';}
+
+function parsePaste(){
+  const raw=document.getElementById('paste-txt').value.trim();
+  if(!raw){toast('⚠️ 請先貼上文字');return;}
+  const lines=raw.split(/[\n,，、；;]+/).map(l=>l.trim()).filter(l=>l.length>1);
+  const found=[];
+  const yr=today.getFullYear();
+
+  // Date patterns to try on each line
+  const patterns=[
+    // 5/20, 05/20
+    {re:/(\d{1,2})[\/](\d{1,2})/,  fn:(m)=>({mo:+m[1],dy:+m[2]})},
+    // 5月20日, 5月20号
+    {re:/(\d{1,2})月(\d{1,2})[日号]?/,fn:(m)=>({mo:+m[1],dy:+m[2]})},
+    // 週X → nearest future weekday
+    {re:/週([一二三四五六日天])/,fn:(m)=>{
+      const wmap={一:1,二:2,三:3,四:4,五:5,六:6,日:0,天:0};
+      const t=wmap[m[1]];let diff=t-today.getDay();if(diff<=0)diff+=7;
+      const d=iad(today,diff);return{mo:d.getMonth()+1,dy:d.getDate()};
+    }},
+    // 下週X
+    {re:/下週([一二三四五六日天])/,fn:(m)=>{
+      const wmap={一:1,二:2,三:3,四:4,五:5,六:6,日:0,天:0};
+      const t=wmap[m[1]];let diff=t-today.getDay();if(diff<=0)diff+=7;diff+=7;
+      const d=iad(today,diff);return{mo:d.getMonth()+1,dy:d.getDate()};
+    }},
+    // 今天
+    {re:/今天/,fn:()=>({mo:today.getMonth()+1,dy:today.getDate()})},
+    // 明天
+    {re:/明天/,fn:()=>{const d=iad(today,1);return{mo:d.getMonth()+1,dy:d.getDate()};}},
+    // 後天
+    {re:/後天/,fn:()=>{const d=iad(today,2);return{mo:d.getMonth()+1,dy:d.getDate()};}},
+  ];
+
+  lines.forEach(line=>{
+    let dateInfo=null;
+    let matchedRe=null;
+    for(const p of patterns){
+      const m=line.match(p.re);
+      if(m){dateInfo=p.fn(m);matchedRe=m[0];break;}
+    }
+    if(!dateInfo)return;
+    if(dateInfo.mo<1||dateInfo.mo>12||dateInfo.dy<1||dateInfo.dy>31)return;
+
+    // Extract title: remove the matched date text, clean up
+    let title=line.replace(matchedRe,'').replace(/^[:\s\-—－　]+|[:\s\-—－　]+$/g,'').trim();
+    if(!title||title.length<1)return;
+
+    const iso=`${yr}-${p2(dateInfo.mo)}-${p2(dateInfo.dy)}`;
+    const rule=matchRule(title);
+    found.push({
+      title,
+      date:iso,
+      category:rule?rule.cat:'other',
+      rems:rule?rule.rems:[0],
+      note:rule?rule.note:''
+    });
+  });
+
+  if(!found.length){
+    document.getElementById('up-body').innerHTML=`<div class="empty"><span class="empty-ic">🔍</span><div class="empty-tx">沒有找到日期</div><div style="font-size:12px;color:var(--hi);margin-top:6px">試試「5/20 親師座談」這種格式</div></div>`;
+    return;
+  }
+  showAI(found);
+}
+
+// (AI EP removed - using local parser)
+
+// (handleFile removed)
+
 window._ai=[];
 function showAI(evs){
   if(!evs.length){document.getElementById('up-body').innerHTML=`<div class="empty"><span class="empty-ic">🔍</span><div class="empty-tx">沒有找到事件</div></div>`;setTimeout(resetUp,2000);return;}
