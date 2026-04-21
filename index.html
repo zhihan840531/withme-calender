@@ -347,7 +347,19 @@ input[type=date],input[type=time]{-webkit-appearance:auto}
       <div class="m-field"><label>類型</label><select id="lv-ty"><option>病假</option><option>事假</option><option>公假</option><option>其他</option></select></div>
     </div>
     <div class="m-field"><label>📝 請假原因</label><textarea id="lv-nt" placeholder="請假原因…" style="height:52px"></textarea></div>
-    <div class="m-field"><label>📚 補課進度</label><textarea id="lv-prog" placeholder="例如：第3課單字、作業P.24…" style="height:52px"></textarea></div>
+    <div class="m-field">
+      <label>📚 補課進度</label>
+      <div style="display:flex;flex-wrap:wrap;gap:5px;margin-bottom:7px">
+        <button type="button" onclick="addProg('SB')"      style="padding:5px 11px;border-radius:999px;border:1.5px solid var(--bd);background:var(--s2);color:var(--tx);font-size:12px;font-weight:700;font-family:inherit">SB</button>
+        <button type="button" onclick="addProg('WB')"      style="padding:5px 11px;border-radius:999px;border:1.5px solid var(--bd);background:var(--s2);color:var(--tx);font-size:12px;font-weight:700;font-family:inherit">WB</button>
+        <button type="button" onclick="addProg('HB')"      style="padding:5px 11px;border-radius:999px;border:1.5px solid var(--bd);background:var(--s2);color:var(--tx);font-size:12px;font-weight:700;font-family:inherit">HB</button>
+        <button type="button" onclick="addProg('GB')"      style="padding:5px 11px;border-radius:999px;border:1.5px solid var(--bd);background:var(--s2);color:var(--tx);font-size:12px;font-weight:700;font-family:inherit">GB</button>
+        <button type="button" onclick="addProg('Reader')"  style="padding:5px 11px;border-radius:999px;border:1.5px solid var(--bd);background:var(--s2);color:var(--tx);font-size:12px;font-weight:700;font-family:inherit">Reader</button>
+        <button type="button" onclick="addProg('Test')"    style="padding:5px 11px;border-radius:999px;border:1.5px solid var(--bd);background:var(--s2);color:var(--tx);font-size:12px;font-weight:700;font-family:inherit">Test</button>
+        <button type="button" onclick="addProg('回家作業')" style="padding:5px 11px;border-radius:999px;border:1.5px solid var(--bd);background:rgba(241,204,116,.2);color:var(--ac2);font-size:12px;font-weight:700;font-family:inherit">回家作業</button>
+      </div>
+      <textarea id="lv-prog" placeholder="點上方快速新增，或直接輸入…" style="height:52px"></textarea>
+    </div>
     <button class="m-save" onclick="saveLeave('student')">💾 儲存學生請假</button>
   </div>
   <!-- Teacher form -->
@@ -888,6 +900,13 @@ function saveLeave(type){
   sv('lv',leaves);closeLeave();if(curTab==='leave')render();
 }
 function delLeave(id){if(!confirm('確定刪除？'))return;leaves=leaves.filter(l=>l.id!==id);sv('lv',leaves);render();}
+function addProg(item){
+  const el=document.getElementById('lv-prog');
+  if(!el)return;
+  const cur=el.value.trim();
+  el.value=cur?cur+'、'+item:item;
+  el.focus();
+}
 function editLeave(id){
   const lv=leaves.find(l=>l.id===id);if(!lv)return;
   const type=lv.lvType==='teacher'?'teacher':'student';
