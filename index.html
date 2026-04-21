@@ -1168,7 +1168,8 @@ function sv(k,v){
 
 // START
 syncFromSheet().then(()=>render());
-
+setInterval(()=>syncFromSheet().then(()=>render()), 3000);
+  
 </script>
 </body>
 </html>
