@@ -280,6 +280,7 @@ input[type=date],input[type=time]{-webkit-appearance:auto}
       <div class="logo-txt">with<em>me</em></div>
     </div>
     <div class="hd-right">
+      <button class="hd-icon-btn" onclick="syncFromSheet()" title="從雲端載入">☁️</button>
       <button class="hd-icon-btn" onclick="openBday()">🎂</button>
       <button class="hd-icon-btn" onclick="openFes()">🎊</button>
     </div>
@@ -1073,8 +1074,82 @@ function checkNotif(){
 // TOAST
 function toast(msg){document.querySelectorAll('.toast').forEach(t=>t.remove());const t=document.createElement('div');t.className='toast';t.textContent=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),2600);}
 
+// ════════ GOOGLE SHEET SYNC ════════
+const GS_URL = 'https://script.google.com/macros/s/AKfycbzUghmQUJB0VFqwq7HC7xcH8IbG6DgqJyw2VkWw6tg2ASlfD8cR5PdhSi504aVrs6mzJg/exec';
+let syncing = false;
+
+function showSyncStatus(msg, color='var(--mu)'){
+  let el = document.getElementById('sync-status');
+  if(!el){
+    el = document.createElement('div');
+    el.id = 'sync-status';
+    el.style.cssText = 'position:fixed;top:10px;left:50%;transform:translateX(-50%);font-size:11px;font-weight:700;padding:4px 14px;border-radius:999px;background:var(--sf);border:1px solid var(--bd);z-index:500;box-shadow:var(--sh);transition:opacity .3s';
+    document.body.appendChild(el);
+  }
+  el.textContent = msg;
+  el.style.color = color;
+  el.style.opacity = '1';
+  if(msg === '✅ 已同步') setTimeout(()=>el.style.opacity='0', 2000);
+}
+
+async function syncToSheet(){
+  if(syncing) return;
+  syncing = true;
+  showSyncStatus('☁️ 同步中…');
+  try{
+    const payload = {
+      action: 'write',
+      table: 'withme',
+      data: [['data', JSON.stringify({events,leaves,todos,bdays,cRules,fesTog,logoIcon})]]
+    };
+    await fetch(GS_URL, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(payload)
+    });
+    showSyncStatus('✅ 已同步', '#2e7d32');
+  } catch(e){
+    showSyncStatus('❌ 同步失敗', '#c0392b');
+  }
+  syncing = false;
+}
+
+async function syncFromSheet(){
+  showSyncStatus('☁️ 載入中…');
+  try{
+    const res = await fetch(GS_URL + '?action=read&table=withme');
+    const json = await res.json();
+    if(json.ok && json.data && json.data.length > 0 && json.data[0][1]){
+      const d = JSON.parse(json.data[0][1]);
+      if(d.events)   { events=d.events;    sl('wm4_ev',events); }
+      if(d.leaves)   { leaves=d.leaves;    sl('wm4_lv',leaves); }
+      if(d.todos)    { todos=d.todos;      sl('wm4_td',todos); }
+      if(d.bdays)    { bdays=d.bdays;      sl('wm4_bd',bdays); }
+      if(d.cRules)   { cRules=d.cRules;    sl('wm4_ru',cRules); }
+      if(d.fesTog)   { fesTog=d.fesTog;    sl('wm4_fe',fesTog); }
+      if(d.logoIcon) { logoIcon=d.logoIcon; sl('wm4_lg',logoIcon); }
+      showSyncStatus('✅ 已載入', '#2e7d32');
+      render();
+    } else {
+      showSyncStatus('✅ 已連線', '#2e7d32');
+    }
+  } catch(e){
+    showSyncStatus('📱 離線模式', 'var(--mu)');
+  }
+}
+
+// Override sv to auto-sync after every save
+const _origSl = sl;
+function sv(k,v){
+  _origSl('wm4_'+k, v);
+  clearTimeout(sv._timer);
+  sv._timer = setTimeout(syncToSheet, 1500);
+}
+
 // START
-render();
+syncFromSheet().then(()=>render());
+
 </script>
 </body>
 </html>
