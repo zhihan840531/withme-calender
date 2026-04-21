@@ -411,7 +411,7 @@ input[type=date],input[type=time]{-webkit-appearance:auto}
 <div class="modal">
   <div class="m-title"><span>🤖 AI 讀取檔案</span><button class="m-close" onclick="closeUpload()">×</button></div>
   <div class="api-row">
-    <input type="password" class="api-in" id="api-k" placeholder="Anthropic API Key (sk-ant-...)">
+    <input type="password" class="api-in" id="api-k" placeholder="Google AI Studio Key (AIza...)">
     <button onclick="saveKey()" style="padding:7px 13px;border:1.5px solid var(--bd);border-radius:999px;background:var(--s2);color:var(--mu);font-size:12px;font-weight:800">儲存</button>
     <span class="api-ok" id="api-ok"></span>
   </div>
@@ -939,17 +939,34 @@ async function handleFile(file){
   const key=localStorage.getItem('wm4_ak');if(!key){toast('⚠️ 請先輸入 API Key');return;}
   document.getElementById('up-body').innerHTML=`<div style="text-align:center;padding:26px"><div class="spin"></div><p style="font-size:13px;color:var(--mu);font-weight:600">🤖 分析中…</p></div>`;
   try{
-    let messages;
-    if(file.type.startsWith('image/')||file.type==='application/pdf'){
+    // Use @google/generative-ai via cdn
+    let parts=[];
+    if(file.type.startsWith('image/')){
       const b64=await new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result.split(',')[1]);r.onerror=rej;r.readAsDataURL(file);});
-      messages=[{role:'user',content:[{type:file.type.startsWith('image/')?'image':'document',source:{type:'base64',media_type:file.type,data:b64}},{type:'text',text:EP}]}];
-    }else{messages=[{role:'user',content:EP+'\n\n'+(await file.text()).slice(0,8000)}];}
-    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json','x-api-key':key,'anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},body:JSON.stringify({model:'claude-opus-4-5',max_tokens:2000,messages})});
+      parts=[{inlineData:{mimeType:file.type,data:b64}},{text:EP}];
+    }else{
+      const txt=await file.text();
+      parts=[{text:EP+'\n\n'+txt.slice(0,8000)}];
+    }
+    // Gemini with x-goog-api-key header (supports CORS)
+    const res=await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent',{
+      method:'POST',
+      headers:{
+        'Content-Type':'application/json',
+        'x-goog-api-key': key
+      },
+      body:JSON.stringify({contents:[{parts}]})
+    });
     const data=await res.json();
-    if(data.error)throw new Error(data.error.message);
-    const parsed=JSON.parse(data.content.map(c=>c.text||'').join('').replace(/```json|```/g,'').trim());
+    if(data.error)throw new Error(data.error.message||JSON.stringify(data.error));
+    const raw=data.candidates?.[0]?.content?.parts?.[0]?.text||'';
+    const clean=raw.replace(/```json|```/g,'').trim();
+    const parsed=JSON.parse(clean);
     showAI(parsed.events||[]);
-  }catch(e){document.getElementById('up-body').innerHTML=`<p style="color:#e57373;text-align:center;padding:14px;font-weight:700">❌ ${e.message}</p>`;setTimeout(resetUp,2500);}
+  }catch(e){
+    document.getElementById('up-body').innerHTML=`<p style="color:#e57373;text-align:center;padding:14px;font-weight:700">❌ ${e.message}</p>`;
+    setTimeout(resetUp,2500);
+  }
 }
 window._ai=[];
 function showAI(evs){
