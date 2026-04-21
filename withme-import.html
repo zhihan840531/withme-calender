@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WithMe 資料匯入</title>
+<style>
+body{font-family:sans-serif;background:#FBF7E9;display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;margin:0;padding:20px;box-sizing:border-box}
+.card{background:#fff;border-radius:20px;padding:28px 24px;max-width:380px;width:100%;text-align:center;box-shadow:0 4px 20px rgba(180,140,60,.15)}
+.icon{font-size:52px;margin-bottom:12px}
+h1{font-size:18px;font-weight:800;color:#3d3028;margin-bottom:8px}
+p{font-size:13px;color:#9a8060;margin-bottom:24px;line-height:1.6}
+button{width:100%;height:50px;background:#F1CC74;border:none;border-radius:14px;font-size:16px;font-weight:800;color:#3d3028;cursor:pointer;box-shadow:0 4px 14px rgba(241,204,116,.4)}
+button:active{opacity:.85}
+.result{margin-top:16px;font-size:14px;font-weight:700;color:#2e7d32;display:none}
+.err{color:#c0392b}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="icon">🐰</div>
+  <h1>WithMe 資料匯入</h1>
+  <p>點下方按鈕，把電腦上的資料匯入到這台裝置</p>
+  <button onclick="importData()">✨ 一鍵匯入資料</button>
+  <div class="result" id="result"></div>
+</div>
+<script>
+const DATA = [{"id":1776773481433,"title":"發parenting","date":"2026-04-22","time":null,"cat":"meeting","rems":[7,1],"note":"","done":false},{"id":1776773401728,"title":"發小一新生說明會","date":"2026-04-23","time":null,"cat":"meeting","rems":[7,1],"note":"","done":false},{"id":1776772402409,"title":"summer預告/學期末分享","date":"2026-06-30","time":null,"cat":"other","rems":[0],"note":"","done":false},{"id":1776772402408,"title":"端午節活動分享","date":"2026-06-23","time":null,"cat":"other","rems":[0],"note":"","done":false},{"id":1776772402407,"title":"summer早鳥提醒","date":"2026-06-16","time":null,"cat":"other","rems":[0],"note":"","done":false},{"id":1776772402406,"title":"端午節著色","date":"2026-06-09","time":null,"cat":"other","rems":[0],"note":"","done":false},{"id":1776772402405,"title":"小一說明會","date":"2026-06-02","time":null,"cat":"meeting","rems":[7,1],"note":"","done":false},{"id":1776772402404,"title":"summer分享","date":"2026-05-26","time":null,"cat":"other","rems":[0],"note":"","done":false},{"id":1776772402403,"title":"teaser/校內布置+早鳥提醒","date":"2026-05-19","time":null,"cat":"other","rems":[0],"note":"","done":false},{"id":1776772402402,"title":"summer早鳥提醒","date":"2026-05-12","time":null,"cat":"other","rems":[0],"note":"","done":false},{"id":1776772402401,"title":"說明會提醒","date":"2026-05-05","time":null,"cat":"meeting","rems":[7,1],"note":"","done":false},{"id":1776772402400,"title":"母親節著色","date":"2026-04-28","time":null,"cat":"other","rems":[0],"note":"","done":false},{"id":1776772402399,"title":"新書推薦","date":"2026-04-21","time":null,"cat":"other","rems":[0],"note":"","done":false},{"id":1776772402398,"title":"世界閱讀日/復活節著色","date":"2026-04-14","time":null,"cat":"other","rems":[0],"note":"","done":false}];
+
+function importData(){
+  try{
+    localStorage.setItem('wm4_ev', JSON.stringify(DATA));
+    const el = document.getElementById('result');
+    el.style.display = 'block';
+    el.className = 'result';
+    el.textContent = `✅ 成功匯入 ${DATA.length} 筆事件！現在可以打開 WithMe 了`;
+    document.querySelector('button').textContent = '✅ 匯入完成！';
+    document.querySelector('button').style.background = '#a5d6a7';
+  }catch(e){
+    const el = document.getElementById('result');
+    el.style.display = 'block';
+    el.className = 'result err';
+    el.textContent = '❌ 匯入失敗：' + e.message;
+  }
+}
+</script>
+</body>
+</html>
