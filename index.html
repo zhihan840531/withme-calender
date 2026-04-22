@@ -327,11 +327,13 @@ input[type=date],input[type=time]{-webkit-appearance:auto}
   <div class="m-field"><label>🔔 提醒</label><div class="rem-pills" id="rpills"></div></div>
   <div class="m-field"><label>📝 備注</label><textarea id="f-n" placeholder="備注…"></textarea></div>
   <div class="m-field">
-  <label>
-    <input type="checkbox" id="ev-to-todo">
-    同時加入待辦
-  </label>
+<div class="m-field" style="padding:4px 0">
+  <button type="button" id="ev-to-todo-btn" onclick="toggleTodoBtn()" style="width:100%;padding:10px;border:1.5px solid #d4c4a0;border-radius:14px;background:#F6EFD6;color:#9a8060;font-size:13px;font-weight:700;font-family:inherit;text-align:left;display:flex;align-items:center;gap:8px">
+    <span id="ev-todo-icon" style="font-size:16px">☐</span>
+    <span>同時加入待辦清單</span>
+  </button>
 </div>
+
   <button class="m-save" onclick="afterSaveEvent(); saveEvent();">💾 儲存</button>
 </div>
 </div>
@@ -1188,6 +1190,28 @@ try{ syncFromSheet().catch(()=>render()); }catch(e){ render(); }
 
     saveTodo();
   }
+}
+
+function toggleTodoBtn(){
+  const btn=document.getElementById('ev-to-todo-btn');
+  const icon=document.getElementById('ev-todo-icon');
+  if(!btn)return;
+  const on=btn.dataset.checked!=='1';
+  btn.dataset.checked=on?'1':'0';
+  btn.style.background=on?'rgba(241,204,116,.2)':'#F6EFD6';
+  btn.style.borderColor=on?'#F1CC74':'#d4c4a0';
+  btn.style.color=on?'#c89a10':'#9a8060';
+  icon.textContent=on?'☑':'☐';
+}
+
+function saveAndMaybeTodo(){
+  const title=document.getElementById('f-t').value.trim();
+  if(!title){toast('⚠️ 請填寫標題');return;}
+  const date=document.getElementById('f-d').value||null;
+  const note=document.getElementById('f-n').value.trim();
+  const addTodo=document.getElementById('ev-to-todo-btn')?.dataset.checked==='1';
+  saveEvent();
+  if(addTodo){todos.push({id:Date.now()+1,title,date,note,done:false});sv('td',todos);toast('✅ 已儲存並加入待辦！');}
 }
 
   
