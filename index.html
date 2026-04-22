@@ -1173,8 +1173,7 @@ function sv(k,v){
 }
 
 // START
-syncFromSheet().then(()=>render());
-setInterval(()=>syncFromSheet().then(()=>render()), 3000);
+try{ syncFromSheet().catch(()=>render()); }catch(e){ render(); }
 
   function afterSaveEvent(){
   if (document.getElementById('ev-to-todo')?.checked) {
