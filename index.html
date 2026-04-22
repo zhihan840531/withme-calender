@@ -521,7 +521,22 @@ function sv(k,v){sl('wm4_'+k,v);}
 migrate();
 document.getElementById('qi').addEventListener('input',function(){showPrev(this.value);});
 document.getElementById('qi').addEventListener('keydown',function(e){if(e.key==='Enter')quickAdd();});
+enableTapFallback();
 
+// Mobile/PWA tap fallback (fixes some devices where click is not fired reliably)
+function enableTapFallback(){
+  let lastTapAt=0;
+  document.addEventListener('touchend',function(e){
+    const target=e.target&&e.target.closest?e.target.closest('[onclick],button,.gcal-pill,.gcal-cell,.wk-ev,.ev-act,.td-check,.td-del,.sec-add,.m-close,.sw,.cat-pill,.rem-pill,.tg-btn'):null;
+    if(!target)return;
+    if(target.closest('input,textarea,select,label'))return;
+    const now=Date.now();
+    if(now-lastTapAt<350)return;
+    lastTapAt=now;
+    e.preventDefault();
+    target.click();
+  },{passive:false});
+}
 // ════════════ QUICK INPUT ════════════
 function parseQ(raw){
   let date=null;
