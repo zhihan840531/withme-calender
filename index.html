@@ -334,7 +334,7 @@ input[type=date],input[type=time]{-webkit-appearance:auto}
   </button>
 </div>
 
-  <button class="m-save" onclick="afterSaveEvent(); saveEvent();">💾 儲存</button>
+  <button class="m-save" onclick="saveAndMaybeTodo()">💾 儲存</button>
 </div>
 </div>
 
@@ -861,7 +861,14 @@ function openAdd(id=null,pd=null,type=null){
   document.getElementById('m-add').style.display='flex';
   setTimeout(()=>document.getElementById('f-t').focus(),180);
 }
-function closeAdd(){document.getElementById('m-add').style.display='none';editId=null;}
+function closeAdd(){
+  document.getElementById('m-add').style.display='none';
+  editId=null;
+  const btn=document.getElementById('ev-to-todo-btn');
+  const icon=document.getElementById('ev-todo-icon');
+  if(btn){btn.dataset.checked='0';btn.style.background='#F6EFD6';btn.style.borderColor='#d4c4a0';btn.style.color='#9a8060';}
+  if(icon)icon.textContent='☐';
+}
 function saveEvent(){
   const title=document.getElementById('f-t').value.trim();
   if(!title){toast('⚠️ 請填寫標題');return;}
@@ -1177,20 +1184,7 @@ function sv(k,v){
 // START
 try{ syncFromSheet().catch(()=>render()); }catch(e){ render(); }
 
-  function afterSaveEvent(){
-  if (document.getElementById('ev-to-todo')?.checked) {
 
-    const title = document.getElementById('f-t')?.value;
-    const date = document.getElementById('f-d')?.value;
-    const note = document.getElementById('f-n')?.value;
-
-    document.getElementById('td-t').value = title;
-    document.getElementById('td-d').value = date;
-    document.getElementById('td-n').value = note || '';
-
-    saveTodo();
-  }
-}
 
 function toggleTodoBtn(){
   const btn=document.getElementById('ev-to-todo-btn');
