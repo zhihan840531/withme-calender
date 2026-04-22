@@ -686,7 +686,7 @@ function rLeave(){
   const stMo=students.filter(l=>l.date&&l.date.startsWith(mo));
   const tcMo=teachers.filter(l=>l.date&&l.date.startsWith(mo));
 
-  let h=`<div class="sec-hd"><span class="sec-title">🏥 請假紀錄</span><button class="sec-add" onclick="openLeave()">＋ 新增</button></div>`;
+   let h=`<div class="sec-hd"><span class="sec-title">🏥 請假紀錄</span><div style="display:flex;gap:8px"><button class="sec-add" onclick="exportTeacherLeaveCSV()">⬇️ 匯出老師請假</button><button class="sec-add" onclick="openLeave()">＋ 新增</button></div></div>`;
 
   // Monthly summary
   h+=`<div style="background:var(--sf);border-radius:var(--r);padding:13px 15px;margin-bottom:12px;box-shadow:var(--sh);border:1px solid var(--bd)">
@@ -885,11 +885,8 @@ function switchLvTab(t){
   document.getElementById('lv-form-teacher').style.display=t==='teacher'?'':'none';
   const btnSt=document.getElementById('lv-tab-st');
   const btnTc=document.getElementById('lv-tab-tc');
-  const onStyle='flex:1;padding:7px;border:none;border-radius:10px;font-size:12px;font-weight:800;font-family:inherit;background:var(--sf);color:var(--tx);box-shadow:0 1px 4px rgba(0,0,0,.08)';
-  const offStyle='flex:1;padding:7px;border:none;border-radius:10px;font-size:12px;font-weight:800;font-family:inherit;background:transparent;color:var(--mu)';
-  btnSt.style.cssText=t==='student'?onStyle:offStyle;
-  btnTc.style.cssText=t==='teacher'?onStyle:offStyle;
-}
+  btnSt.classList.toggle('on',t==='student');
+  btnTc.classList.toggle('on',t==='teacher');
 function openLeave(){
   const td=ito();
   document.getElementById('lv-d').value=td;
@@ -915,6 +912,28 @@ function saveLeave(type){
   sv('lv',leaves);closeLeave();if(curTab==='leave')render();
 }
 function delLeave(id){if(!confirm('確定刪除？'))return;leaves=leaves.filter(l=>l.id!==id);sv('lv',leaves);render();}
+  function csvEsc(v){
+  const s=(v??'').toString();
+  return /[",\n]/.test(s)?`"${s.replace(/"/g,'""')}"`:s;
+}
+function exportTeacherLeaveCSV(){
+  const teachers=leaves.filter(l=>l.lvType==='teacher');
+  if(!teachers.length){toast('⚠️ 目前沒有老師請假資料');return;}
+  const rows=[['日期','老師姓名','請假類型','代課老師','備註']];
+  [...teachers]
+    .sort((a,b)=>(a.date||'').localeCompare(b.date||''))
+    .forEach(lv=>rows.push([lv.date||'',lv.name||'',lv.type||'',lv.sub||'',lv.note||'']));
+  const csv='\uFEFF'+rows.map(r=>r.map(csvEsc).join(',')).join('\n');
+  const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download=`teacher-leave-${ito()}.csv`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(a.href);
+  toast(`✅ 已匯出 ${teachers.length} 筆老師請假`);
+}
 function addProg(item){
   const el=document.getElementById('lv-prog');
   if(!el)return;
