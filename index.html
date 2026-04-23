@@ -582,10 +582,13 @@ function quickAdd(){
 function setTab(t,btn){
   curTab=t;
   document.querySelectorAll('.nb').forEach(b=>b.classList.remove('on'));
-  btn.classList.add('on');
+  if(btn)btn.classList.add('on');
   render();
 }
-
+function goLeaveInfo(){
+  const leaveBtn=document.querySelector(".nb[onclick*=\"setTab('leave'\"]");
+  setTab('leave',leaveBtn||null);
+}
 function render(){
   const m=document.getElementById('main');
   try{
