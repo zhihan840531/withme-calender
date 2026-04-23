@@ -308,7 +308,7 @@ input[type=date],input[type=time]{-webkit-appearance:auto}
 <!-- BOTTOM BAR -->
 <div class="bbar">
   <button class="bb-main" onclick="openAdd()">✨ 新增事件</button>
-  <button class="bb-side" onclick="openAdd(null,null,'school')">🏫</button>
+   <button class="bb-side" onclick="openLeave()">🏫</button>
 </div>
 
 </div><!-- .app -->
@@ -700,7 +700,7 @@ function rLeave(){
   const stMo=students.filter(l=>l.date&&l.date.startsWith(mo));
   const tcMo=teachers.filter(l=>l.date&&l.date.startsWith(mo));
 
-   let h=`<div class="sec-hd"><span class="sec-title">🏥 請假紀錄</span><div style="display:flex;gap:8px"><button class="sec-add" onclick="exportTeacherLeaveCSV()">⬇️ 匯出老師請假</button><button class="sec-add" onclick="openLeave()">＋ 新增</button></div></div>`;
+  let h=`<div class="sec-hd"><span class="sec-title">🏥 請假紀錄</span><div style="display:flex;gap:8px"><button class="sec-add" onclick="exportTeacherLeaveCSV()">⬇️ 匯出老師請假</button></div></div>`;
 
   // Monthly summary
   h+=`<div style="background:var(--sf);border-radius:var(--r);padding:13px 15px;margin-bottom:12px;box-shadow:var(--sh);border:1px solid var(--bd)">
